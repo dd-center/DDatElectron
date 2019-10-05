@@ -1,0 +1,24 @@
+{
+  "name": "ddatelectron",
+  "description": "DD@Electron",
+  "version": "0.0.1",
+  "private": true,
+  "main": "index.js",
+  "dependencies": {},
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dd-center/DDatElectron.git"
+  },
+  "author": "simon3000 <simon3000@163.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dd-center/DDatElectron/issues"
+  },
+  "homepage": "https://github.com/dd-center/DDatElectron#readme",
+  "devDependencies": {
+    "electron": "^6.0.11"
+  }
+}
