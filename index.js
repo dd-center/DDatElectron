@@ -2,7 +2,7 @@ const { app, BrowserWindow } = require('electron')
 
 let win
 
-function createWindow() {
+const createWindow = () => {
   win = new BrowserWindow({
     width: 800,
     height: 600,
@@ -12,8 +12,6 @@ function createWindow() {
   })
 
   win.loadFile('index.html')
-
-  win.webContents.openDevTools()
 
   win.on('closed', () => {
     win = null

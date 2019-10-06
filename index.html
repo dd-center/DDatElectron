@@ -4,21 +4,24 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Hello Bulma!</title>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'">
+  <title>DD@Electron</title>
   <link rel="stylesheet" href="./bulma/css/bulma.css">
 </head>
 
 <body>
-  <section class="section">
-    <div class="container">
-      <h1 class="title">
-        Hello World
-      </h1>
-      <p class="subtitle">
-        I can see <strong>you!</strong>
-      </p>
+  <section class="hero is-medium">
+    <div class="hero-body">
+      <div class="container">
+        <h1 class="title">
+          DD<i>@</i>Electron
+        </h1>
+        <h2 class="subtitle" id="version">
+        </h2>
+      </div>
     </div>
   </section>
 </body>
+<script src="./main.js"></script>
 
 </html>
