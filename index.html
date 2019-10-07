@@ -4,9 +4,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'">
   <title>DD@Electron</title>
   <link rel="stylesheet" href="./bulma/css/bulma.css">
+  <script src="./vue/dist/vue.js"></script>
 </head>
 
 <body>
@@ -23,13 +23,13 @@
     </div>
   </section>
 
-  <section class="section">
+  <section class="section" id="about">
     <div class="container">
       <h1 class="title">关于</h1>
       <h2 class="subtitle">
         DD@Electron
       </h2>
-      <p>运行时间: <span id="uptime"></span></p>
+      <p>运行时间: {{uptime}}</p>
     </div>
   </section>
 

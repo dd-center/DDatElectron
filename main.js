@@ -1,5 +1,8 @@
+/* eslint-disable no-new */
 const meta = require('./package.json')
 const { ipcRenderer } = require('electron')
+
+const Vue = window.Vue
 
 const get = (channel, ...args) => new Promise(resolve => {
   const key = String(Math.random())
@@ -9,11 +12,18 @@ const get = (channel, ...args) => new Promise(resolve => {
 
 document.getElementById('version').innerText = `v${meta.version}`
 
-const interval = () => {
-  (async () => {
-    document.getElementById('uptime').innerText = await get('uptime')
-  })()
-  return interval
-}
-
-setInterval(interval(), 1000)
+new Vue({
+  el: '#about',
+  data: {
+    uptime: ''
+  },
+  mounted() {
+    const interval = () => {
+      (async () => {
+        this.uptime = await get('uptime')
+      })()
+      return interval
+    }
+    setInterval(interval(), 1000)
+  }
+})
