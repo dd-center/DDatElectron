@@ -10,14 +10,19 @@ const get = (channel, ...args) => new Promise(resolve => {
   ipcRenderer.send('get', channel, key, ...args)
 })
 
-document.getElementById('version').innerText = `v${meta.version}`
-
 new Vue({
-  el: '#about',
+  el: '#main',
   data: {
-    uptime: ''
+    version: meta.version,
+    completeNum: undefined,
+    uptime: undefined
   },
-  mounted() {
+  async created() {
+    this.completeNum = await get('completeNum')
+    ipcRenderer.on('complete', (_events, completeNum) => {
+      this.completeNum = completeNum
+    })
+
     const interval = () => {
       (async () => {
         this.uptime = await get('uptime')

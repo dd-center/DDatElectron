@@ -30,6 +30,9 @@ let PARALLEL = 8
 let INTERVAL = 680
 let nickname
 let url
+let completeNum = 0
+
+const getCompleteNum = () => completeNum
 
 const connect = () => new Promise(resolve => {
   url = new URL('wss://cluster.vtbs.moe')
@@ -53,6 +56,8 @@ const connect = () => new Promise(resolve => {
       const time = Date.now()
       const { body } = await got(url).catch(e => ({ body: { code: e.statusCode } }))
       console.log(`job complete ${((Date.now() - time) / 1000).toFixed(2)}s`)
+      completeNum++
+      events.emit('complete', completeNum)
       ws.send(JSON.stringify({
         key,
         data: body
@@ -84,4 +89,4 @@ const connect = () => new Promise(resolve => {
   }
 })()
 
-module.exports = { events }
+module.exports = { events, getCompleteNum }

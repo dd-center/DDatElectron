@@ -2,8 +2,11 @@ const { ipcMain } = require('electron')
 const moment = require('moment')
 moment.locale('zh-cn')
 
-module.exports = ({ getWin, events }) => {
+module.exports = ({ getWin, events, getCompleteNum }) => {
   const router = {
+    completeNum() {
+      return getCompleteNum()
+    },
     uptime() {
       const uptime = process.uptime()
       let duration = moment.duration(uptime, 's')
@@ -27,6 +30,13 @@ module.exports = ({ getWin, events }) => {
       return result.join(' ')
     }
   }
+
+  events.on('complete', completeNum => {
+    const win = getWin()
+    if (win) {
+      win.webContents.send('complete', completeNum)
+    }
+  })
 
   ipcMain.on('get', (e, channel, key, ...args) => {
     const route = router[channel]

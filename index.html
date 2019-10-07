@@ -11,27 +11,45 @@
 
 <body>
 
-  <section class="hero is-medium">
-    <div class="hero-body">
-      <div class="container">
-        <h1 class="title">
-          DD<i>@</i>Electron
-        </h1>
-        <h2 class="subtitle" id="version">
-        </h2>
+  <div id="main">
+    <section class="hero is-fullheight">
+      <div class="hero-body">
+        <div class="container">
+          <h1 class="title">
+            DD<i>@</i>Electron
+          </h1>
+          <h2 class="subtitle">v{{version}}</h2>
+          <br>
+          <nav class="level">
+            <div class="level-item has-text-centered">
+              <div>
+                <p class="heading">已处理请求</p>
+                <p class="title">{{completeNum}}</p>
+              </div>
+            </div>
+            <div class="level-item has-text-centered">
+              <div>
+                <p class="heading">运行时间</p>
+                <p class="title">{{uptime}}</p>
+              </div>
+            </div>
+          </nav>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="section" id="about">
-    <div class="container">
-      <h1 class="title">关于</h1>
-      <h2 class="subtitle">
-        DD@Electron
-      </h2>
-      <p>运行时间: {{uptime}}</p>
-    </div>
-  </section>
+    <hr>
+
+    <section class="section">
+      <div class="container">
+        <h1 class="title">关于</h1>
+        <h2 class="subtitle">
+          DD@Electron
+        </h2>
+        <p>Github: <a href="https://github.com/dd-center/DDatElectron" target="_blank" rel="noopener noreferrer">https://github.com/dd-center/DDatElectron</a></p>
+      </div>
+    </section>
+  </div>
 
 </body>
 <script src="./main.js"></script>

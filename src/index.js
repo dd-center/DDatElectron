@@ -1,5 +1,5 @@
-const { events } = require('./ws')
+const { events, getCompleteNum } = require('./ws')
 const { getWin } = require('./window')
 const connect = require('./ipc')
 
-connect({ getWin, events })
+connect({ getWin, events, getCompleteNum })

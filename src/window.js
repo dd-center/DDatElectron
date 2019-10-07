@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, shell } = require('electron')
 
 let win
 
@@ -15,6 +15,10 @@ const createWindow = () => {
 
   win.on('closed', () => {
     win = null
+  })
+  win.webContents.on('new-window', (e, url) => {
+    e.preventDefault()
+    shell.openExternal(url)
   })
 }
 
