@@ -42,6 +42,41 @@
 
     <section class="section">
       <div class="container">
+        <h1 class="title">设置 (重启生效)</h1>
+      </div>
+      <br>
+
+      <div class="field">
+        <label class="label">间隔</label>
+        <div class="control">
+          <input class="input" type="number" v-model="interval" :class="{'is-danger': intervalWarning}" placeholder="毫秒">
+        </div>
+        <p class="help is-danger" v-if="intervalWarning">
+          间隔太小会影响使用bilibili
+        </p>
+        <p class="help">目前: {{state.INTERVAL}} ms</p>
+      </div>
+
+      <br>
+
+      <div class="field">
+        <p class="control">
+          <button class="button is-inverted is-outlined is-rounded" @click="close">
+            重启
+          </button>
+        </p>
+      </div>
+
+      <br>
+
+      <p>当前url: <code>{{state.url}}</code></p>
+
+    </section>
+
+    <hr>
+
+    <section class="section">
+      <div class="container">
         <h1 class="title">关于</h1>
         <h2 class="subtitle">
           DD@Electron

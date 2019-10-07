@@ -17,16 +17,38 @@ new Vue({
   data: {
     version: meta.version,
     state: {
-      completeNum: undefined
+      completeNum: undefined,
+      INTERVAL: undefined,
+      url: undefined
     },
-    uptime: undefined
+    uptime: undefined,
+    interval: undefined
+  },
+  watch: {
+    interval(value) {
+      if (value) {
+        send('updateInterval', Number(value))
+      }
+    }
+  },
+  methods: {
+    close() {
+      send('close')
+    }
+  },
+  computed: {
+    intervalWarning() {
+      return this.interval && Number(this.interval) < 500
+    }
   },
   async created() {
     ipcRenderer.on('stateUpdate', (_events, key, value) => {
       this.state[key] = value
     })
 
-    this.state.completeNum = await get('completeNum')
+    Object.keys(this.state).forEach(async key => {
+      this.state[key] = await get(key)
+    })
 
     const interval = () => {
       (async () => {

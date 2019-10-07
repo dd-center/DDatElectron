@@ -3,5 +3,5 @@ const connect = require('./ws')
 const { getWin } = require('./window')
 const sync = require('./ipc')
 
-connect({ state })
-sync({ getWin, state, stateEmitter })
+const { getWs, updateInterval } = connect({ state })
+sync({ getWin, updateInterval, state, stateEmitter, getWs })

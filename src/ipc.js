@@ -2,10 +2,17 @@ const { ipcMain } = require('electron')
 const moment = require('moment')
 moment.locale('zh-cn')
 
-module.exports = ({ getWin, state, stateEmitter }) => {
+module.exports = ({ getWin, state, stateEmitter, getWs, updateInterval }) => {
   const router = {
     state(key) {
       return state[key]
+    },
+    updateInterval,
+    close() {
+      const ws = getWs()
+      if (ws.readyState === 1) {
+        ws.close()
+      }
     },
     uptime() {
       const uptime = process.uptime()
@@ -39,6 +46,8 @@ module.exports = ({ getWin, state, stateEmitter }) => {
   })
 
   subscribe('completeNum')
+  subscribe('INTERVAL')
+  subscribe('url')
 
   ipcMain.on('get', (e, channel, key, ...args) => {
     const route = router[channel]

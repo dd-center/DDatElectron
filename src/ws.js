@@ -27,6 +27,7 @@ module.exports = ({ state }) => {
   let PARALLEL = 8
   let INTERVAL = 680
   let nickname
+  let ws
 
   const connect = () => new Promise(resolve => {
     let url = new URL('wss://cluster.vtbs.moe')
@@ -40,10 +41,17 @@ module.exports = ({ state }) => {
 
     console.log(`using: ${url}`)
     state.nickname = nickname
-    state.url = url
+    state.url = url.href
     state.INTERVAL = INTERVAL
 
-    const ws = new WebSocket(url)
+    ws = new WebSocket(url)
+
+    const secureSend = data => {
+      if (ws.readyState === 1) {
+        ws.send(data)
+      }
+    }
+
     ws.on('message', async message => {
       const json = parse(message)
       if (json) {
@@ -54,17 +62,17 @@ module.exports = ({ state }) => {
         const { body } = await got(url).catch(e => ({ body: { code: e.statusCode } }))
         console.log(`job complete ${((Date.now() - time) / 1000).toFixed(2)}s`)
         state.completeNum++
-        ws.send(JSON.stringify({
+        secureSend(JSON.stringify({
           key,
           data: body
         }))
-        setTimeout(() => ws.send('DDhttp'), INTERVAL * PARALLEL - Date.now() + now)
+        setTimeout(() => secureSend('DDhttp'), INTERVAL * PARALLEL - Date.now() + now)
       }
     })
 
     ws.on('open', () => {
       console.log('DD@Home connected')
-      Array(PARALLEL).fill().map(() => ws.send('DDhttp'))
+      Array(PARALLEL).fill().map(() => secureSend('DDhttp'))
     })
 
     ws.on('error', e => {
@@ -84,4 +92,11 @@ module.exports = ({ state }) => {
       await connect()
     }
   })()
+
+  const getWs = () => ws
+  const updateInterval = interval => {
+    INTERVAL = interval
+  }
+
+  return { getWs, updateInterval }
 }
