@@ -1,5 +1,7 @@
-const { events, getCompleteNum } = require('./ws')
+const { state, stateEmitter } = require('./state')
+const connect = require('./ws')
 const { getWin } = require('./window')
-const connect = require('./ipc')
+const sync = require('./ipc')
 
-connect({ getWin, events, getCompleteNum })
+connect({ state })
+sync({ getWin, state, stateEmitter })

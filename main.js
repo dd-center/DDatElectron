@@ -4,28 +4,33 @@ const { ipcRenderer } = require('electron')
 
 const Vue = window.Vue
 
-const get = (channel, ...args) => new Promise(resolve => {
+const send = (channel, ...args) => new Promise(resolve => {
   const key = String(Math.random())
   ipcRenderer.once(key, (_event, data) => resolve(data))
   ipcRenderer.send('get', channel, key, ...args)
 })
 
+const get = key => send('state', key)
+
 new Vue({
   el: '#main',
   data: {
     version: meta.version,
-    completeNum: undefined,
+    state: {
+      completeNum: undefined
+    },
     uptime: undefined
   },
   async created() {
-    this.completeNum = await get('completeNum')
-    ipcRenderer.on('complete', (_events, completeNum) => {
-      this.completeNum = completeNum
+    ipcRenderer.on('stateUpdate', (_events, key, value) => {
+      this.state[key] = value
     })
+
+    this.state.completeNum = await get('completeNum')
 
     const interval = () => {
       (async () => {
-        this.uptime = await get('uptime')
+        this.uptime = await send('uptime')
       })()
       return interval
     }
