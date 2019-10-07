@@ -1,6 +1,9 @@
-const { version: VERSION } = require('./package.json')
+const { version: VERSION } = require('../package.json')
+const EventEmitter = require('events')
 const WebSocket = require('ws')
 const got = require('got')
+
+const events = new EventEmitter()
 
 console.log(`
 ${Array(process.stdout.columns).fill('D').join('')}
@@ -80,3 +83,5 @@ const connect = () => new Promise(resolve => {
     await connect()
   }
 })()
+
+module.exports = { events }

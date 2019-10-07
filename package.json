@@ -6,6 +6,7 @@
   "main": "index.js",
   "dependencies": {
     "got": "^9.6.0",
+    "moment": "^2.24.0",
     "ws": "^7.1.2"
   },
   "scripts": {
