@@ -1,4 +1,5 @@
 const { app, BrowserWindow } = require('electron')
+require('./ws')
 
 let win
 

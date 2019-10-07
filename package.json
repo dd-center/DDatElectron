@@ -4,7 +4,10 @@
   "version": "0.0.1",
   "private": true,
   "main": "index.js",
-  "dependencies": {},
+  "dependencies": {
+    "got": "^9.6.0",
+    "ws": "^7.1.2"
+  },
   "scripts": {
     "start": "electron ."
   },
