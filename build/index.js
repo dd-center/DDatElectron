@@ -16,7 +16,10 @@ builder.build({
       gatekeeperAssess: false
     }
   },
-  publish: process.env.CI ? 'always' : 'never'
+  publish: {
+    provider: 'github',
+    releaseType: 'draft'
+  }
 }).then(() => {
   console.log('done')
 }).catch(console.error)
