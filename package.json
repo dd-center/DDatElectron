@@ -12,7 +12,7 @@
   "scripts": {
     "start": "electron .",
     "build": "node build",
-    "release": "build"
+    "release": "npm run build"
   },
   "repository": {
     "type": "git",
