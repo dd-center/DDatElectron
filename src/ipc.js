@@ -11,7 +11,7 @@ module.exports = ({ getWin, state, stateEmitter, getWs, updateInterval }) => {
     close() {
       const ws = getWs()
       if (ws.readyState === 1) {
-        ws.close()
+        ws.close(3000, 'User Reload')
       }
     },
     uptime() {

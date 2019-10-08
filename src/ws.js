@@ -49,6 +49,7 @@ module.exports = ({ state }) => {
     const secureSend = data => {
       if (ws.readyState === 1) {
         ws.send(data)
+        return true
       }
     }
 
@@ -60,13 +61,15 @@ module.exports = ({ state }) => {
         console.log('job received', url)
         const time = Date.now()
         const { body } = await got(url).catch(e => ({ body: { code: e.statusCode } }))
-        console.log(`job complete ${((Date.now() - time) / 1000).toFixed(2)}s`)
-        state.completeNum++
-        secureSend(JSON.stringify({
+        const result = secureSend(JSON.stringify({
           key,
           data: body
         }))
         setTimeout(() => secureSend('DDhttp'), INTERVAL * PARALLEL - Date.now() + now)
+        if (result) {
+          console.log(`job complete ${((Date.now() - time) / 1000).toFixed(2)}s`)
+          state.completeNum++
+        }
       }
     })
 
@@ -79,9 +82,13 @@ module.exports = ({ state }) => {
       console.error(`error: ${e.message}`)
     })
 
-    ws.on('close', n => {
-      console.log(`closed ${n}`)
-      setTimeout(resolve, 1000)
+    ws.on('close', (n, reason) => {
+      console.log('closed', n, reason)
+      if (reason === 'User Reload') {
+        resolve()
+      } else {
+        setTimeout(resolve, 1000)
+      }
     })
   })
 
