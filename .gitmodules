@@ -5,3 +5,5 @@
 [submodule "vue"]
 	path = vue
 	url = https://github.com/vuejs/vue.git
+	branch = dev
+	shallow = true
