@@ -1,7 +1,0 @@
-[submodule "vue"]
-	path = vue
-	url = https://github.com/vuejs/vue.git
-	branch = dev
-[submodule "bulma"]
-	path = bulma
-	url = https://github.com/jgthms/bulma.git
