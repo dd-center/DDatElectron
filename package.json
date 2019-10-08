@@ -11,7 +11,8 @@
   },
   "scripts": {
     "start": "electron .",
-    "build": "node build"
+    "build": "node build",
+    "release": "build"
   },
   "repository": {
     "type": "git",

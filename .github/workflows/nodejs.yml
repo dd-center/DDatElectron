@@ -22,7 +22,7 @@ jobs:
     - name: npm install, build
       run: |
         npm install
-        npm run build
+        npm run release
       env:
         CI: true
         GH_TOKEN: ${{ secrets.GH_TOKEN }}
