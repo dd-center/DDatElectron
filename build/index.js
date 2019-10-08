@@ -19,13 +19,13 @@ got('https://api.github.com/repos/dd-center/DDatElectron/releases/latest', { jso
         entitlementsInherit: join(__dirname, 'entitlements.mac.plist'),
         hardenedRuntime: true,
         gatekeeperAssess: false
+      },
+      publish: {
+        provider: 'github',
+        releaseType: publish ? 'release' : 'draft'
       }
     },
-    publish: {
-      provider: 'github',
-      publish: 'always',
-      releaseType: publish ? 'release' : 'draft'
-    }
+    publish: publish ? 'always' : 'never'
   }).then(() => {
     console.log('done')
   }).catch(console.error)
