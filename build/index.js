@@ -8,6 +8,7 @@ builder.build({
     appId: 'center.dd.DDatElectron',
     afterSign: join(__dirname, 'notarize.js'),
     mac: {
+      target: ['dmg'],
       category: 'public.app-category.utilities',
       entitlements: join(__dirname, 'entitlements.mac.plist'),
       entitlementsInherit: join(__dirname, 'entitlements.mac.plist'),
