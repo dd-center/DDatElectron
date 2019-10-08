@@ -26,6 +26,7 @@
   "devDependencies": {
     "electron": "^6.0.11",
     "electron-builder": "^21.2.0",
-    "electron-notarize": "^0.1.1"
+    "electron-notarize": "^0.1.1",
+    "git-last-commit": "^1.0.0"
   }
 }

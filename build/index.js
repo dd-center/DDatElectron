@@ -1,11 +1,11 @@
 const { join } = require('path')
 const { version } = require('../package.json')
-const got = require('got')
+const git = require('git-last-commit')
 const builder = require('electron-builder')
 const Platform = builder.Platform
 
-got('https://api.github.com/repos/dd-center/DDatElectron/releases/latest', { json: 'true' }).then(({ body: { name } }) => {
-  const publish = version !== name
+git.getLastCommit((_err, commit) => {
+  const publish = version === commit.subject
   console.log('publish', publish)
   builder.build({
     targets: Platform.current().createTarget(),
