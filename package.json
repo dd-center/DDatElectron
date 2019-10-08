@@ -10,7 +10,8 @@
     "ws": "^7.1.2"
   },
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "build": "node build"
   },
   "repository": {
     "type": "git",
@@ -23,6 +24,7 @@
   },
   "homepage": "https://github.com/dd-center/DDatElectron#readme",
   "devDependencies": {
-    "electron": "^6.0.11"
+    "electron": "^6.0.11",
+    "electron-builder": "^21.2.0"
   }
 }
