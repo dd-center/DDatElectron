@@ -5,11 +5,13 @@ const builder = require('electron-builder')
 const Platform = builder.Platform
 
 got('https://api.github.com/repos/dd-center/DDatElectron/releases/latest', { json: 'true' }).then(({ body: { name } }) => {
+  const publish = version !== name
+  console.log('publish', publish)
   builder.build({
     targets: Platform.current().createTarget(),
     config: {
       appId: 'center.dd.DDatElectron',
-      afterSign: join(__dirname, 'notarize.js'),
+      afterSign: publish ? join(__dirname, 'notarize.js') : undefined,
       mac: {
         target: ['dmg'],
         category: 'public.app-category.utilities',
@@ -22,7 +24,7 @@ got('https://api.github.com/repos/dd-center/DDatElectron/releases/latest', { jso
     publish: {
       provider: 'github',
       publish: 'always',
-      releaseType: version !== name ? 'release' : 'draft'
+      releaseType: publish ? 'release' : 'draft'
     }
   }).then(() => {
     console.log('done')
