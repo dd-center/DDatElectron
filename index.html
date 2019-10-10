@@ -18,7 +18,7 @@
           <h1 class="title">
             DD<i>@</i>Electron
           </h1>
-          <h2 class="subtitle">v{{version}}</h2>
+          <h2 class="subtitle">DD@Home</h2>
           <br>
           <nav class="level">
             <div class="level-item has-text-centered">
@@ -42,7 +42,8 @@
 
     <section class="section">
       <div class="container">
-        <h1 class="title">设置 (重载生效)</h1>
+        <h1 class="title">设置</h1>
+        <h2 class="subtitle">(重载生效)</h2>
       </div>
       <br>
 
@@ -79,9 +80,16 @@
       <div class="container">
         <h1 class="title">关于</h1>
         <h2 class="subtitle">
-          DD@Electron
+          DD@Electron v{{version}}
         </h2>
         <p>Github: <a href="https://github.com/dd-center/DDatElectron" target="_blank" rel="noopener noreferrer">https://github.com/dd-center/DDatElectron</a></p>
+        <br>
+        <p>版本: {{version}} <span v-if="state.update === false">(最新版本)</span></p>
+        <p v-if="state.update">(新版本 {{state.update}}) <a v-if="state.updateDownloaded" @click="restart" class="button is-small is-rounded is-info">重启更新</a></p>
+        <template v-if="state.updateProgress && !state.updateDownloaded">
+          <p>{{Math.round(state.updateProgress.total/1024/1024*100)/100}}MB 下载中...</p>
+          <progress class="progress is-small" :value="state.updateProgress.percent" max="100"></progress>
+        </template>
       </div>
     </section>
   </div>

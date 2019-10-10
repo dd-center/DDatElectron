@@ -19,7 +19,10 @@ new Vue({
     state: {
       completeNum: undefined,
       INTERVAL: undefined,
-      url: undefined
+      url: undefined,
+      update: undefined,
+      updateProgress: undefined,
+      updateDownloaded: undefined
     },
     uptime: undefined,
     interval: undefined
@@ -34,6 +37,9 @@ new Vue({
   methods: {
     close() {
       send('close')
+    },
+    restart() {
+      send('restart')
     }
   },
   computed: {
