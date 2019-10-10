@@ -20,6 +20,9 @@ git.getLastCommit((_err, commit) => {
         hardenedRuntime: true,
         gatekeeperAssess: false
       },
+      win: {
+        target: ['portable']
+      },
       publish: {
         provider: 'github',
         releaseType: publish ? 'release' : 'draft'
