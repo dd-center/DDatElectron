@@ -13,7 +13,7 @@ git.getLastCommit((_err, commit) => {
       appId: 'center.dd.DDatElectron',
       afterSign: publish ? join(__dirname, 'notarize.js') : undefined,
       mac: {
-        target: ['dmg'],
+        target: ['dmg', 'zip'],
         category: 'public.app-category.utilities',
         entitlements: join(__dirname, 'entitlements.mac.plist'),
         entitlementsInherit: join(__dirname, 'entitlements.mac.plist'),
@@ -21,7 +21,7 @@ git.getLastCommit((_err, commit) => {
         gatekeeperAssess: false
       },
       win: {
-        target: ['portable']
+        target: ['portable', 'nsis']
       },
       publish: {
         provider: 'github',
