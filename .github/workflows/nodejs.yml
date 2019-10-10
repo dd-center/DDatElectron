@@ -19,9 +19,11 @@ jobs:
       run: |
         git submodule init
         git submodule update
-    - name: npm install, build
+    - name: npm install
       run: |
         npm install
+    - name: build
+      run: |
         npm run build
       env:
         CI: true
