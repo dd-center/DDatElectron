@@ -9,6 +9,8 @@ Please read README.md for more information.
 ${Array(80).fill('D').join('')}
 `)
 
+const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
+
 const parse = string => {
   try {
     const json = JSON.parse(string)
@@ -24,7 +26,7 @@ const parse = string => {
 }
 
 module.exports = ({ state }) => {
-  let PARALLEL = 8
+  let PARALLEL = 32
   let INTERVAL = 680
   let nickname
   let ws
@@ -53,29 +55,44 @@ module.exports = ({ state }) => {
       }
     }
 
+    let pending = []
+
     ws.on('message', async message => {
       const json = parse(message)
       if (json) {
-        const now = Date.now()
-        const { key, url } = json
-        console.log('job received', url)
-        const time = Date.now()
-        const { body } = await got(url).catch(e => ({ body: { code: e.statusCode } }))
-        const result = secureSend(JSON.stringify({
-          key,
-          data: body
-        }))
-        setTimeout(() => secureSend('DDhttp'), INTERVAL * PARALLEL - Date.now() + now)
-        if (result) {
-          console.log(`job complete ${((Date.now() - time) / 1000).toFixed(2)}s`)
-          state.completeNum++
+        const resolve = pending.shift(pending)
+        if (resolve) {
+          console.log('job received', json.url)
+          resolve(json)
         }
       }
     })
 
+    const processer = async () => {
+      await wait(INTERVAL * PARALLEL * Math.random())
+      while (true) {
+        const now = Date.now()
+        const { key, url } = await new Promise(resolve => {
+          pending.push(resolve)
+          secureSend('DDhttp')
+        })
+        const time = Date.now()
+        const { body } = await got(url).catch(e => ({ body: JSON.stringify({ code: e.statusCode }) }))
+        const result = secureSend(JSON.stringify({
+          key,
+          data: body
+        }))
+        if (result) {
+          console.log(`job complete ${((Date.now() - time) / 1000).toFixed(2)}s`, INTERVAL * PARALLEL - Date.now() + now)
+          state.completeNum++
+        }
+        await wait(INTERVAL * PARALLEL - Date.now() + now)
+      }
+    }
+
     ws.on('open', () => {
       console.log('DD@Home connected')
-      Array(PARALLEL).fill().map(() => secureSend('DDhttp'))
+      Array(PARALLEL).fill().map(processer)
     })
 
     ws.on('error', e => {
