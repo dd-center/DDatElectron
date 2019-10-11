@@ -63,5 +63,8 @@ new Vue({
       return interval
     }
     setInterval(interval(), 1000)
+  },
+  mounted() {
+    document.getElementById('main').style.display = 'block'
   }
 })
