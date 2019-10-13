@@ -37,6 +37,9 @@ module.exports = ({ getWin, state, stateEmitter, getWs, updateInterval, autoUpda
       if (s) {
         result.push(`${s} 秒`)
       }
+      if (!result.length) {
+        result.push('0 秒')
+      }
       return result.join(' ')
     }
   }
