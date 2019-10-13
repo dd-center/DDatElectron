@@ -25,10 +25,10 @@ const parse = string => {
   }
 }
 
-module.exports = ({ state }) => {
+module.exports = async ({ state, db }) => {
   let PARALLEL = 32
-  let INTERVAL = 680
-  let nickname
+  let INTERVAL = await db.get('INTERVAL').catch(() => 680)
+  let nickname = await db.get('nickname').catch(() => undefined)
   let ws
 
   const connect = () => new Promise(resolve => {
@@ -119,6 +119,7 @@ module.exports = ({ state }) => {
 
   const getWs = () => ws
   const updateInterval = interval => {
+    db.put('INTERVAL', interval)
     INTERVAL = interval
   }
 

@@ -7,6 +7,7 @@
   "dependencies": {
     "electron-updater": "^4.1.2",
     "got": "^9.6.0",
+    "level": "^5.0.1",
     "moment": "^2.24.0",
     "ws": "^7.1.2"
   },

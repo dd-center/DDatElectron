@@ -1,10 +1,13 @@
 const { state, stateEmitter } = require('./state')
 const connect = require('./ws')
-const { getWin } = require('./window')
+const { getWin, createWindow } = require('./window')
 const sync = require('./ipc')
 const updater = require('./updater')
+const { db, load } = require('./db')
 
 const autoUpdater = updater({ state })
 
-const { getWs, updateInterval } = connect({ state })
-sync({ getWin, updateInterval, state, stateEmitter, getWs, autoUpdater })
+load({ state, stateEmitter })
+
+connect({ state, db })
+  .then(({ getWs, updateInterval }) => sync({ getWin, updateInterval, state, stateEmitter, getWs, autoUpdater, createWindow }))

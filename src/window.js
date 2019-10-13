@@ -1,8 +1,12 @@
 const { app, BrowserWindow, shell } = require('electron')
+const { once } = require('events')
+
+const ready = once(app, 'ready')
 
 let win
 
-const createWindow = () => {
+const createWindow = async () => {
+  await ready
   win = new BrowserWindow({
     width: 800,
     height: 600,
@@ -23,8 +27,6 @@ const createWindow = () => {
   })
 }
 
-app.on('ready', createWindow)
-
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit()
@@ -39,4 +41,4 @@ app.on('activate', () => {
 
 const getWin = () => win
 
-module.exports = { getWin }
+module.exports = { getWin, createWindow }
