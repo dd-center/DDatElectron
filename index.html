@@ -55,7 +55,17 @@
         <p class="help is-danger" v-if="intervalWarning">
           间隔太小会影响使用bilibili
         </p>
-        <p class="help">目前: {{state.INTERVAL}} ms</p>
+        <p class="help">当前: {{state.INTERVAL}} ms</p>
+      </div>
+
+      <br>
+
+      <div class="field">
+        <label class="label">昵称 (可选)</label>
+        <div class="control">
+          <input class="input" type="text" v-model="nickname" placeholder="会显示在统计中哦">
+        </div>
+        <p class="help">当前: {{state.nickname || '无'}}</p>
       </div>
 
       <br>

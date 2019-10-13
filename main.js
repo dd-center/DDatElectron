@@ -22,16 +22,21 @@ new Vue({
       url: undefined,
       update: undefined,
       updateProgress: undefined,
-      updateDownloaded: undefined
+      updateDownloaded: undefined,
+      nickname: undefined
     },
     uptime: undefined,
-    interval: undefined
+    interval: undefined,
+    nickname: undefined
   },
   watch: {
     interval(value) {
       if (value) {
         send('updateInterval', Number(value))
       }
+    },
+    nickname(value) {
+      send('updateNickname', value)
     }
   },
   methods: {

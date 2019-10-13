@@ -10,4 +10,4 @@ const autoUpdater = updater({ state })
 load({ state, stateEmitter })
 
 connect({ state, db })
-  .then(({ getWs, updateInterval }) => sync({ getWin, updateInterval, state, stateEmitter, getWs, autoUpdater, createWindow }))
+  .then(({ getWs, updateInterval, updateNickname }) => sync({ getWin, updateInterval, updateNickname, state, stateEmitter, getWs, autoUpdater, createWindow }))

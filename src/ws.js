@@ -122,6 +122,10 @@ module.exports = async ({ state, db }) => {
     db.put('INTERVAL', interval)
     INTERVAL = interval
   }
+  const updateNickname = name => {
+    db.put('nickname', name)
+    nickname = name
+  }
 
-  return { getWs, updateInterval }
+  return { getWs, updateInterval, updateNickname }
 }
