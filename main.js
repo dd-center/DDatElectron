@@ -25,8 +25,10 @@ new Vue({
       update: undefined,
       updateProgress: undefined,
       updateDownloaded: undefined,
-      nickname: undefined
+      nickname: undefined,
+      log: undefined
     },
+    logs: [],
     uptime: undefined,
     interval: undefined,
     nickname: undefined
@@ -39,6 +41,12 @@ new Vue({
     },
     nickname(value) {
       send('updateNickname', value)
+    },
+    'state.log'(log) {
+      this.logs.unshift(log)
+      if (this.logs.length > 233) {
+        this.logs.pop()
+      }
     }
   },
   methods: {
@@ -55,6 +63,10 @@ new Vue({
     }
   },
   async created() {
+    let logs = await get('logs')
+    logs.shift()
+    this.logs = logs
+
     ipcRenderer.on('stateUpdate', (_events, key, value) => {
       this.state[key] = value
     })

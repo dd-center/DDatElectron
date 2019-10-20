@@ -41,6 +41,7 @@ module.exports = async ({ state, db }) => {
       url.searchParams.set('name', nickname)
     }
 
+    state.log = `using: ${url}`
     console.log(`using: ${url}`)
     state.nickname = nickname
     state.url = url.href
@@ -85,6 +86,7 @@ module.exports = async ({ state, db }) => {
         if (result) {
           state.delay = Math.round(process.uptime() * 1000 / state.completeNumNow)
           console.log(`job complete ${((Date.now() - time) / 1000).toFixed(2)}s`, state.delay, INTERVAL * PARALLEL - Date.now() + now)
+          state.log = url
           state.completeNum++
           state.completeNumNow++
         }
@@ -93,15 +95,18 @@ module.exports = async ({ state, db }) => {
     }
 
     ws.on('open', () => {
+      state.log = 'DD@Home connected'
       console.log('DD@Home connected')
       Array(PARALLEL).fill().map(processer)
     })
 
     ws.on('error', e => {
+      state.log = `error: ${e.message}`
       console.error(`error: ${e.message}`)
     })
 
     ws.on('close', (n, reason) => {
+      state.log = `closed, ${n}, ${reason}`
       console.log('closed', n, reason)
       if (reason === 'User Reload') {
         resolve()

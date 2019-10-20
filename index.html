@@ -7,11 +7,33 @@
   <title>DD@Electron</title>
   <link rel="stylesheet" href="./bulma/bulma.css">
   <script src="./vue/vue.js"></script>
+  <style>
+    .fullheight {
+      height: calc(100vh + 24px);
+      width: 3000px;
+      position: absolute;
+      top: 0;
+      overflow: hidden;
+      font-family: monospace;
+      font-size: 12px;
+      color: grey;
+      opacity: 0.233;
+      padding-top: 2px;
+      padding-left: 2px;
+    }
+
+  </style>
 </head>
 
 <body style="-webkit-app-region: drag">
 
   <div id="main" style="display: none;">
+    <div class="fullheight">
+      <p v-for="log in logs">
+        {{log}}
+      </p>
+    </div>
+
     <section class="hero is-fullheight">
       <div class="hero-body">
         <div class="container">
