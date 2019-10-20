@@ -92,6 +92,11 @@
         <h2 class="subtitle">
           DD@Electron v{{version}}
         </h2>
+        <p>已处理请求(总计): {{state.completeNum}}</p>
+        <p>已处理请求(本次启动): {{state.completeNumNow}}</p>
+        <p>平均间隔: {{state.delay}}ms</p>
+        <p>运行时间: {{uptime}}</p>
+        <br>
         <p>Github: <a href="https://github.com/dd-center/DDatElectron" target="_blank" rel="noopener noreferrer">https://github.com/dd-center/DDatElectron</a></p>
         <br>
         <p>版本: {{version}} <span v-if="state.update === false">(最新版本)</span></p>

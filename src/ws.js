@@ -26,7 +26,7 @@ const parse = string => {
 }
 
 module.exports = async ({ state, db }) => {
-  let PARALLEL = 32
+  let PARALLEL = 128
   let INTERVAL = await db.get('INTERVAL').catch(() => 680)
   let nickname = await db.get('nickname').catch(() => undefined)
   let ws
@@ -60,7 +60,7 @@ module.exports = async ({ state, db }) => {
     ws.on('message', async message => {
       const json = parse(message)
       if (json) {
-        const resolve = pending.shift(pending)
+        const resolve = pending.shift()
         if (resolve) {
           console.log('job received', json.url)
           resolve(json)
@@ -83,8 +83,10 @@ module.exports = async ({ state, db }) => {
           data: body
         }))
         if (result) {
-          console.log(`job complete ${((Date.now() - time) / 1000).toFixed(2)}s`, INTERVAL * PARALLEL - Date.now() + now)
+          state.delay = Math.round(process.uptime() * 1000 / state.completeNumNow)
+          console.log(`job complete ${((Date.now() - time) / 1000).toFixed(2)}s`, state.delay, INTERVAL * PARALLEL - Date.now() + now)
           state.completeNum++
+          state.completeNumNow++
         }
         await wait(INTERVAL * PARALLEL - Date.now() + now)
       }

@@ -3,7 +3,8 @@ const EventEmitter = require('events')
 const stateEmitter = new EventEmitter()
 
 const state = new Proxy({
-  completeNum: 0
+  completeNum: 0,
+  completeNumNow: 0
 }, {
   set(target, key, value) {
     target[key] = value

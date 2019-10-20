@@ -53,6 +53,8 @@ module.exports = ({ getWin, state, stateEmitter, getWs, updateInterval, autoUpda
   })
 
   subscribe('completeNum')
+  subscribe('completeNumNow')
+  subscribe('delay')
   subscribe('INTERVAL')
   subscribe('nickname')
   subscribe('url')

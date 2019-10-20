@@ -18,6 +18,8 @@ new Vue({
     version: meta.version,
     state: {
       completeNum: undefined,
+      completeNumNow: undefined,
+      delay: undefined,
       INTERVAL: undefined,
       url: undefined,
       update: undefined,
@@ -49,7 +51,7 @@ new Vue({
   },
   computed: {
     intervalWarning() {
-      return this.interval && Number(this.interval) < 500
+      return this.interval && Number(this.interval) < 400
     }
   },
   async created() {
