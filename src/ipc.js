@@ -2,7 +2,7 @@ const { ipcMain } = require('electron')
 const moment = require('moment')
 moment.locale('zh-cn')
 
-module.exports = ({ getWin, state, stateEmitter, getWs, updateInterval, autoUpdater, createWindow, updateNickname }) => {
+module.exports = ({ getWin, state, stateEmitter, getWs, updateInterval, quitAndInstall, createWindow, updateNickname }) => {
   const router = {
     state(key) {
       return state[key]
@@ -16,7 +16,7 @@ module.exports = ({ getWin, state, stateEmitter, getWs, updateInterval, autoUpda
       }
     },
     restart() {
-      autoUpdater.quitAndInstall()
+      quitAndInstall()
     },
     uptime() {
       const uptime = process.uptime()

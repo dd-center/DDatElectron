@@ -10,5 +10,9 @@ const autoUpdater = updater({ state })
 open({ state, stateEmitter })
   .then(async db => {
     const { getWs, updateInterval, updateNickname } = await connect({ state, db })
-    sync({ getWin, updateInterval, updateNickname, state, stateEmitter, getWs, autoUpdater, createWindow })
+    const quitAndInstall = async () => {
+      await db.close()
+      autoUpdater.quitAndInstall()
+    }
+    sync({ getWin, updateInterval, updateNickname, state, stateEmitter, getWs, quitAndInstall, createWindow })
   })
