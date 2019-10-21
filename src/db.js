@@ -1,15 +1,16 @@
-const { app } = require('electron')
 const { join } = require('path')
+const { once } = require('events')
+const { app } = require('electron')
 const level = require('level')
 
-const db = level(join(app.getPath('userData'), './db'), { valueEncoding: 'json' })
+const ready = once(app, 'ready')
 
-const load = async ({ state, stateEmitter }) => {
+module.exports = async ({ state, stateEmitter }) => {
+  await ready
+  const db = level(join(app.getPath('userData'), './db'), { valueEncoding: 'json' })
+
   state.completeNum += await db.get('completeNum').catch(() => 0)
+  stateEmitter.on('completeNum', value => db.put('completeNum', value))
 
-  stateEmitter.on('completeNum', value => {
-    db.put('completeNum', value)
-  })
+  return db
 }
-
-module.exports = { db, load }
