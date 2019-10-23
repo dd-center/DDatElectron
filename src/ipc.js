@@ -3,50 +3,43 @@ const moment = require('moment')
 moment.locale('zh-cn')
 
 module.exports = ({ getWin, state, stateEmitter, getWs, updateInterval, quitAndInstall, createWindow, updateNickname }) => {
-  const router = {
-    state(key) {
-      return state[key]
-    },
-    updateInterval,
-    updateNickname,
-    close() {
-      const ws = getWs()
-      if (ws.readyState === 1) {
-        ws.close(3000, 'User Reload')
-      }
-    },
-    restart() {
-      quitAndInstall()
-    },
-    ready({ sender }) {
-      fromWebContents(sender).show()
-    },
-    uptime() {
-      const uptime = process.uptime()
-      const duration = moment.duration(uptime, 's')
-      const result = []
-      const d = Math.floor(duration.asDays())
-      const h = duration.hours()
-      const m = duration.minutes()
-      const s = duration.seconds()
-      if (d) {
-        result.push(`${d} 天`)
-      }
-      if (h) {
-        result.push(`${h} 时`)
-      }
-      if (m) {
-        result.push(`${m} 分`)
-      }
-      if (s) {
-        result.push(`${s} 秒`)
-      }
-      if (!result.length) {
-        result.push('0 秒')
-      }
-      return result.join(' ')
+  ipcMain.handle('state', (_e, key) => state[key])
+  ipcMain.handle('updateInterval', (_e, ...values) => updateInterval(...values))
+  ipcMain.handle('updateNickname', (_e, ...values) => updateNickname(...values))
+
+  ipcMain.handle('close', _e => {
+    const ws = getWs()
+    if (ws.readyState === 1) {
+      ws.close(3000, 'User Reload')
     }
-  }
+  })
+  ipcMain.handle('restart', quitAndInstall)
+  ipcMain.handle('ready', ({ sender }) => fromWebContents(sender).show())
+  ipcMain.handle('uptime', _e => {
+    const uptime = process.uptime()
+    const duration = moment.duration(uptime, 's')
+    const result = []
+    const d = Math.floor(duration.asDays())
+    const h = duration.hours()
+    const m = duration.minutes()
+    const s = duration.seconds()
+    if (d) {
+      result.push(`${d} 天`)
+    }
+    if (h) {
+      result.push(`${h} 时`)
+    }
+    if (m) {
+      result.push(`${m} 分`)
+    }
+    if (s) {
+      result.push(`${s} 秒`)
+    }
+    if (!result.length) {
+      result.push('0 秒')
+    }
+    return result.join(' ')
+  })
 
   const subscribe = key => stateEmitter.on(key, value => {
     const win = getWin()
@@ -69,13 +62,6 @@ module.exports = ({ getWin, state, stateEmitter, getWs, updateInterval, quitAndI
   subscribe('pulls')
   subscribe('online')
   subscribe('homes')
-
-  ipcMain.on('get', (e, channel, key, ...args) => {
-    const route = router[channel]
-    if (route) {
-      e.reply(key, route(...args, e))
-    }
-  })
 
   createWindow()
 }

@@ -4,13 +4,7 @@ const { ipcRenderer } = require('electron')
 
 const Vue = window.Vue
 
-const send = (channel, ...args) => new Promise(resolve => {
-  const key = String(Math.random())
-  ipcRenderer.once(key, (_event, data) => resolve(data))
-  ipcRenderer.send('get', channel, key, ...args)
-})
-
-const get = key => send('state', key)
+const get = key => ipcRenderer.invoke('state', key)
 
 new Vue({
   el: '#main',
@@ -40,11 +34,11 @@ new Vue({
   watch: {
     interval(value) {
       if (value) {
-        send('updateInterval', Number(value))
+        ipcRenderer.invoke('updateInterval', Number(value))
       }
     },
     nickname(value) {
-      send('updateNickname', value)
+      ipcRenderer.invoke('updateNickname', value)
     },
     'state.log'(log) {
       this.logs.unshift(log)
@@ -55,10 +49,10 @@ new Vue({
   },
   methods: {
     close() {
-      send('close')
+      ipcRenderer.invoke('close')
     },
     restart() {
-      send('restart')
+      ipcRenderer.invoke('restart')
     }
   },
   computed: {
@@ -94,7 +88,7 @@ new Vue({
 
     const interval = () => {
       (async () => {
-        this.uptime = await send('uptime')
+        this.uptime = await ipcRenderer.invoke('uptime')
       })()
       return interval
     }
@@ -103,6 +97,6 @@ new Vue({
   async mounted() {
     document.getElementById('main').style.display = 'block'
     await this.$nextTick()
-    send('ready')
+    ipcRenderer.invoke('ready')
   }
 })
