@@ -4,7 +4,7 @@ moment.locale('zh-cn')
 
 module.exports = ({ getWin, state, stateEmitter, getWs, updateInterval, quitAndInstall, createWindow, updateNickname }) => {
   const router = {
-    state(_e, key) {
+    state(key) {
       return state[key]
     },
     updateInterval,
@@ -69,7 +69,7 @@ module.exports = ({ getWin, state, stateEmitter, getWs, updateInterval, quitAndI
   ipcMain.on('get', (e, channel, key, ...args) => {
     const route = router[channel]
     if (route) {
-      e.reply(key, route(e, ...args))
+      e.reply(key, route(...args, e))
     }
   })
 
