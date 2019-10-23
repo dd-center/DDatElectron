@@ -65,6 +65,10 @@ module.exports = ({ getWin, state, stateEmitter, getWs, updateInterval, quitAndI
   subscribe('update')
   subscribe('updateProgress')
   subscribe('updateDownloaded')
+  subscribe('pending')
+  subscribe('pulls')
+  subscribe('online')
+  subscribe('homes')
 
   ipcMain.on('get', (e, channel, key, ...args) => {
     const route = router[channel]

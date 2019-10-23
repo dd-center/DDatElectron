@@ -42,14 +42,14 @@
           </h1>
           <h2 class="subtitle">DD@Home</h2>
           <br>
-          <nav class="level">
-            <div class="level-item has-text-centered">
+          <nav class="level has-text-centered">
+            <div class="level-item">
               <div>
                 <p class="heading">已处理请求</p>
                 <p class="title">{{state.completeNum}}</p>
               </div>
             </div>
-            <div class="level-item has-text-centered">
+            <div class="level-item">
               <div>
                 <p class="heading">运行时间</p>
                 <p class="title">{{uptime}}</p>
@@ -58,6 +58,50 @@
           </nav>
         </div>
       </div>
+    </section>
+
+    <hr>
+
+    <section class="section">
+      <div class="container">
+        <h1 class="title">状态</h1>
+        <h2 class="subtitle">Service</h2>
+      </div>
+      <br>
+      <nav class="level has-text-centered">
+        <div class="level-item">
+          <div>
+            <p class="heading">目前在线</p>
+            <p class="title">{{state.online}}</p>
+          </div>
+        </div>
+        <div class="level-item">
+          <div>
+            <p class="heading">任务</p>
+            <p class="title">{{state.pending}}</p>
+          </div>
+        </div>
+        <div class="level-item">
+          <div>
+            <p class="heading">Pulls</p>
+            <p class="title">{{state.pulls}}</p>
+          </div>
+        </div>
+      </nav>
+
+      <div class="table-container">
+        <table class="table is-striped is-hoverable is-fullwidth">
+          <tbody>
+            <tr v-for="home in homes" :key="home.id">
+              <td>{{home.name}}@{{home.runtime}}</td>
+              <td>{{home.resolves}}/{{home.sum}}</td>
+              <td>{{home.platform}}</td>
+              <td>{{home.version}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
     </section>
 
     <hr>

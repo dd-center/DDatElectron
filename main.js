@@ -26,7 +26,11 @@ new Vue({
       updateProgress: undefined,
       updateDownloaded: undefined,
       nickname: undefined,
-      log: undefined
+      log: undefined,
+      pending: undefined,
+      pulls: undefined,
+      online: undefined,
+      homes: []
     },
     logs: [],
     uptime: undefined,
@@ -60,6 +64,19 @@ new Vue({
   computed: {
     intervalWarning() {
       return this.interval && Number(this.interval) < 400
+    },
+    homes() {
+      return this.state.homes
+        .map(({ runtime = 'Home', version = '', docker, platform = '', name = 'DD', resolves, rejects, id }) => ({
+          id,
+          name,
+          sum: resolves + rejects,
+          resolves,
+          runtime,
+          platform: docker || platform,
+          version
+        }))
+        .sort(({ resolves: a }, { resolves: b }) => b - a)
     }
   },
   async created() {

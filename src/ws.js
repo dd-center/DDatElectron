@@ -13,13 +13,7 @@ const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
 
 const parse = string => {
   try {
-    const json = JSON.parse(string)
-    if (json) {
-      const { key, data: { type, url } } = json
-      if (type === 'http') {
-        return { key, url }
-      }
-    }
+    return JSON.parse(string)
   } catch (_) {
     return undefined
   }
@@ -29,7 +23,21 @@ module.exports = async ({ state, db }) => {
   const PARALLEL = 128
   let INTERVAL = await db.get('INTERVAL').catch(() => 680)
   let nickname = await db.get('nickname').catch(() => undefined)
-  let ws
+  let ws = {}
+  const queryTable = new Map()
+
+  const secureSend = data => {
+    if (ws.readyState === 1) {
+      ws.send(data)
+      return true
+    }
+  }
+
+  const ask = query => new Promise(resolve => {
+    const key = String(Math.random())
+    queryTable.set(key, resolve)
+    secureSend(JSON.stringify({ key, query }))
+  })
 
   const connect = () => new Promise(resolve => {
     const url = new URL('wss://cluster.vtbs.moe')
@@ -49,22 +57,23 @@ module.exports = async ({ state, db }) => {
 
     ws = new WebSocket(url)
 
-    const secureSend = data => {
-      if (ws.readyState === 1) {
-        ws.send(data)
-        return true
-      }
-    }
-
     const pending = []
 
     ws.on('message', async message => {
-      const json = parse(message)
-      if (json) {
+      const { key, data } = parse(message)
+      const { type } = data
+      if (type === 'http') {
+        const { url } = data
         const resolve = pending.shift()
         if (resolve) {
-          console.log('job received', json.url)
-          resolve(json)
+          console.log('job received', url)
+          resolve({ key, url })
+        }
+      } else if (type === 'query') {
+        if (queryTable.has(key)) {
+          const { result } = data
+          queryTable.get(key)(result)
+          queryTable.delete(key)
         }
       }
     })
@@ -107,6 +116,7 @@ module.exports = async ({ state, db }) => {
 
     ws.on('close', (n, reason) => {
       state.log = `closed, ${n}, ${reason}`
+      queryTable.clear()
       console.log('closed', n, reason)
       if (reason === 'User Reload') {
         resolve()
@@ -123,6 +133,21 @@ module.exports = async ({ state, db }) => {
       await connect()
     }
   })()
+
+  setInterval(async () => {
+    if (ws.readyState === 1) {
+      ['pending', 'pulls', 'online'].map(async key => {
+        state[key] = await ask(key)
+      })
+      state.homes = await ask('homes')
+    }
+  }, 1000)
+
+  setInterval(async () => {
+    if (ws.readyState === 1) {
+      // state.homes = await ask('homes')
+    }
+  }, 1000 * 15)
 
   const getWs = () => ws
   const updateInterval = interval => {
