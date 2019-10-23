@@ -26,13 +26,13 @@ const parse = string => {
 }
 
 module.exports = async ({ state, db }) => {
-  let PARALLEL = 128
+  const PARALLEL = 128
   let INTERVAL = await db.get('INTERVAL').catch(() => 680)
   let nickname = await db.get('nickname').catch(() => undefined)
   let ws
 
   const connect = () => new Promise(resolve => {
-    let url = new URL('wss://cluster.vtbs.moe')
+    const url = new URL('wss://cluster.vtbs.moe')
     url.searchParams.set('runtime', `electronv${process.versions.electron}`)
     url.searchParams.set('version', VERSION)
     url.searchParams.set('platform', process.platform)
@@ -56,7 +56,7 @@ module.exports = async ({ state, db }) => {
       }
     }
 
-    let pending = []
+    const pending = []
 
     ws.on('message', async message => {
       const json = parse(message)

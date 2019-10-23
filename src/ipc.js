@@ -1,10 +1,10 @@
-const { ipcMain } = require('electron')
+const { ipcMain, BrowserWindow: { fromWebContents } } = require('electron')
 const moment = require('moment')
 moment.locale('zh-cn')
 
 module.exports = ({ getWin, state, stateEmitter, getWs, updateInterval, quitAndInstall, createWindow, updateNickname }) => {
   const router = {
-    state(key) {
+    state(_e, key) {
       return state[key]
     },
     updateInterval,
@@ -18,14 +18,17 @@ module.exports = ({ getWin, state, stateEmitter, getWs, updateInterval, quitAndI
     restart() {
       quitAndInstall()
     },
+    ready({ sender }) {
+      fromWebContents(sender).show()
+    },
     uptime() {
       const uptime = process.uptime()
-      let duration = moment.duration(uptime, 's')
-      let result = []
-      let d = Math.floor(duration.asDays())
-      let h = duration.hours()
-      let m = duration.minutes()
-      let s = duration.seconds()
+      const duration = moment.duration(uptime, 's')
+      const result = []
+      const d = Math.floor(duration.asDays())
+      const h = duration.hours()
+      const m = duration.minutes()
+      const s = duration.seconds()
       if (d) {
         result.push(`${d} 天`)
       }
@@ -66,7 +69,7 @@ module.exports = ({ getWin, state, stateEmitter, getWs, updateInterval, quitAndI
   ipcMain.on('get', (e, channel, key, ...args) => {
     const route = router[channel]
     if (route) {
-      e.reply(key, route(...args))
+      e.reply(key, route(e, ...args))
     }
   })
 

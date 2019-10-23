@@ -63,7 +63,7 @@ new Vue({
     }
   },
   async created() {
-    let logs = await get('logs')
+    const logs = await get('logs')
     logs.shift()
     this.logs = logs
 
@@ -83,7 +83,9 @@ new Vue({
     }
     setInterval(interval(), 1000)
   },
-  mounted() {
+  async mounted() {
     document.getElementById('main').style.display = 'block'
+    await this.$nextTick()
+    send('ready')
   }
 })
