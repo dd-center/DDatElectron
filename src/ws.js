@@ -22,7 +22,7 @@ const parse = string => {
 }
 
 module.exports = async ({ state, db }) => {
-  const PARALLEL = 128
+  const PARALLEL = 64
   let INTERVAL = await db.get('INTERVAL').catch(() => 680)
   let nickname = await db.get('nickname').catch(() => undefined)
   let ws = {}
