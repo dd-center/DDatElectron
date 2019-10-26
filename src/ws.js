@@ -9,6 +9,8 @@ Please read README.md for more information.
 ${Array(80).fill('D').join('')}
 `)
 
+const base = process.env.development ? 'ws://0.0.0.0:9013' : 'wss://cluster.vtbs.moe'
+
 const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
 
 const parse = string => {
@@ -40,7 +42,7 @@ module.exports = async ({ state, db }) => {
   })
 
   const connect = () => new Promise(resolve => {
-    const url = new URL('wss://cluster.vtbs.moe')
+    const url = new URL(base)
     url.searchParams.set('runtime', `electronv${process.versions.electron}`)
     url.searchParams.set('version', VERSION)
     url.searchParams.set('platform', process.platform)
