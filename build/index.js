@@ -1,13 +1,17 @@
+const fs = require('fs').promises
 const { join } = require('path')
+const got = require('got')
 const { version } = require('../package.json')
 const git = require('git-last-commit')
 const builder = require('electron-builder')
 const Platform = builder.Platform
 
-git.getLastCommit((_err, commit) => {
+git.getLastCommit(async (_err, commit) => {
+  const { body: vue } = await got('https://vuejs.org/js/vue.min.js')
+  await fs.writeFile('vue/vue.js', vue)
   const publish = version === commit.subject
   console.log('publish', publish)
-  builder.build({
+  await builder.build({
     targets: Platform.current().createTarget(),
     config: {
       appId: 'center.dd.DDatElectron',
@@ -29,7 +33,8 @@ git.getLastCommit((_err, commit) => {
       }
     },
     publish: publish ? 'always' : 'never'
-  }).then(() => {
-    console.log('done')
   }).catch(console.error)
+  const { body: vueDev } = await got('https://vuejs.org/js/vue.js')
+  await fs.writeFile('vue/vue.js', vueDev)
+  console.log('done')
 })
