@@ -3,11 +3,13 @@
 
 #### 下载
 
-Windows: <http://dd.center/api/update/ddatelectron/ddatelectron-Setup-1.1.1.exe>
+Windows: <https://dd.center/api/latest/ddatelectron/windows>
 
-macOS: <http://dd.center/api/update/ddatelectron/ddatelectron-1.1.1.dmg>
+macOS: <https://dd.center/api/latest/ddatelectron/mac>
 
-Linux: <http://dd.center/api/update/ddatelectron/ddatelectron-1.1.1.AppImage>
+<!-- Linux: <https://dd.center/api/latest/ddatelectron/linux> -->
+
+
 
 Github Release: <https://github.com/dd-center/DDatElectron/releases/latest>
 
