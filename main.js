@@ -57,7 +57,7 @@ new Vue({
   },
   computed: {
     intervalWarning() {
-      return this.interval && Number(this.interval) < 400
+      return this.interval && Number(this.interval) < 500
     },
     homes() {
       return this.state.homes
