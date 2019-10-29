@@ -22,8 +22,8 @@ const parse = string => {
 }
 
 module.exports = async ({ state, db }) => {
-  const PARALLEL = 64
-  let INTERVAL = await db.get('INTERVAL').catch(() => 680)
+  const PARALLEL = 32
+  let INTERVAL = await db.get('INTERVAL').catch(() => 840)
   let nickname = await db.get('nickname').catch(() => undefined)
   let ws = {}
   const queryTable = new Map()
