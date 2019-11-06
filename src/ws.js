@@ -136,20 +136,33 @@ module.exports = async ({ state, db }) => {
     }
   })()
 
-  setInterval(async () => {
-    if (ws.readyState === 1) {
-      ['pending', 'pulls', 'online'].map(async key => {
-        state[key] = await ask(key)
-      })
-      state.homes = await ask('homes')
-    }
-  }, 1000)
+  ;
 
-  setInterval(async () => {
-    if (ws.readyState === 1) {
-      // state.homes = await ask('homes')
+  (async () => {
+    while (true) {
+      const pause = wait(233)
+      if (ws.readyState === 1) {
+        state.pending = await ask('pending')
+        state.pulls = await ask('pulls')
+      }
+      await pause
     }
-  }, 1000 * 15)
+  })()
+
+  ;
+
+  (async () => {
+    while (true) {
+      if (ws.readyState === 1) {
+        const pause = wait(1000 * 5)
+        state.homes = await ask('homes')
+        state.online = await ask('online')
+        await pause
+      } else {
+        await wait(500)
+      }
+    }
+  })()
 
   const getWs = () => ws
   const updateInterval = interval => {
