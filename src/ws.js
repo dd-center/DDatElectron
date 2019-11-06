@@ -130,15 +130,11 @@ module.exports = async ({ state, db }) => {
 
   ;
 
-  (async () => {
+  (f => w => f(f, w()))(f => w => f(f, w()))(async () => {
     while (true) {
       await connect()
     }
-  })()
-
-  ;
-
-  (async () => {
+  })(async () => {
     while (true) {
       const pause = wait(233)
       if (ws.readyState === 1) {
@@ -147,11 +143,7 @@ module.exports = async ({ state, db }) => {
       }
       await pause
     }
-  })()
-
-  ;
-
-  (async () => {
+  })(async () => {
     while (true) {
       if (ws.readyState === 1) {
         const pause = wait(1000 * 5)
@@ -162,7 +154,7 @@ module.exports = async ({ state, db }) => {
         await wait(500)
       }
     }
-  })()
+  })
 
   const getWs = () => ws
   const updateInterval = interval => {
