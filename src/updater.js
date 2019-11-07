@@ -1,5 +1,7 @@
 const { autoUpdater } = require('electron-updater')
-autoUpdater.logger = console
+const log = require('electron-log')
+
+autoUpdater.logger = log
 autoUpdater.setFeedURL('https://dd.center/api/update/ddatelectron/')
 
 module.exports = ({ state }) => {

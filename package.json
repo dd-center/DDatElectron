@@ -5,6 +5,7 @@
   "private": true,
   "main": "index.js",
   "dependencies": {
+    "electron-log": "^3.0.9",
     "electron-updater": "^4.1.2",
     "got": "^9.6.0",
     "level": "^6.0.0",
