@@ -17,6 +17,9 @@ git.getLastCommit(async (_err, commit) => {
       appId: 'center.dd.DDatElectron',
       afterSign: publish ? join(__dirname, 'notarize.js') : undefined,
       mac: {
+        extendInfo: {
+          LSUIElement: 1
+        },
         target: ['dmg', 'zip'],
         category: 'public.app-category.utilities',
         entitlements: join(__dirname, 'entitlements.mac.plist'),
