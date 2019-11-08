@@ -17,6 +17,8 @@ const createWindow = async () => {
     }
   })
 
+  win.removeMenu()
+
   win.loadFile('index.html')
 
   win.on('closed', () => {
