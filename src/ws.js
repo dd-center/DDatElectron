@@ -1,3 +1,5 @@
+/* eslint-disable no-unexpected-multiline */
+/* eslint-disable func-call-spacing */
 const { version: VERSION } = require('../package.json')
 const WebSocket = require('ws')
 const got = require('got')
@@ -35,10 +37,15 @@ module.exports = async ({ state, db }) => {
     }
   }
 
-  const ask = query => new Promise(resolve => {
+  const ask = query => new Promise((resolve, reject) => {
     const key = String(Math.random())
     queryTable.set(key, resolve)
     secureSend(JSON.stringify({ key, query }))
+    setTimeout(() => {
+      if (queryTable.has(key)) {
+        reject(new Error('timeout'))
+      }
+    }, 1000 * 5)
   })
 
   const connect = () => new Promise(resolve => {
@@ -130,25 +137,29 @@ module.exports = async ({ state, db }) => {
 
   ;
 
-  (f => w => f(f, w()))(f => w => f(f, w()))(async () => {
+  (f => w => f(f, w()))
+  (f => w => f(f, w()))
+  (async () => {
     while (true) {
       await connect()
     }
-  })(async () => {
+  })
+  (async () => {
     while (true) {
       const pause = wait(233)
       if (ws.readyState === 1) {
-        state.pending = await ask('pending')
-        state.pulls = await ask('pulls')
+        state.pending = await ask('pending').catch(() => state.pending)
+        state.pulls = await ask('pulls').catch(() => state.pulls)
       }
       await pause
     }
-  })(async () => {
+  })
+  (async () => {
     while (true) {
       if (ws.readyState === 1) {
         const pause = wait(1000 * 5)
-        state.homes = await ask('homes')
-        state.online = await ask('online')
+        state.homes = await ask('homes').catch(() => state.homes)
+        state.online = await ask('online').catch(() => state.online)
         await pause
       } else {
         await wait(500)
