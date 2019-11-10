@@ -28,7 +28,8 @@ git.getLastCommit(async (_err, commit) => {
         gatekeeperAssess: false
       },
       win: {
-        target: ['portable', 'nsis']
+        target: ['portable', 'nsis'],
+        verifyUpdateCodeSignature: false
       },
       publish: {
         provider: 'github',
