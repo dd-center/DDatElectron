@@ -5,12 +5,11 @@
   "private": true,
   "main": "index.js",
   "dependencies": {
+    "ddatnodejs": "dd-center/DDatHome-nodejs",
     "electron-log": "^3.0.9",
     "electron-updater": "^4.1.2",
-    "got": "^9.6.0",
     "level": "^6.0.0",
-    "moment": "^2.24.0",
-    "ws": "^7.1.2"
+    "moment": "^2.24.0"
   },
   "scripts": {
     "start": "electron .",
@@ -28,8 +27,9 @@
   "homepage": "https://github.com/dd-center/DDatElectron#readme",
   "devDependencies": {
     "electron": "^7.0.0",
-    "electron-notarize": "^0.2.0",
     "electron-builder": "^22.1.0",
-    "git-last-commit": "^1.0.0"
+    "electron-notarize": "^0.2.0",
+    "git-last-commit": "^1.0.0",
+    "got": "^9.6.0"
   }
 }
