@@ -28,7 +28,6 @@ const makeURL = nickname => {
 }
 
 module.exports = async ({ state, db }) => {
-  const PARALLEL = 32
   const PING_INTERVAL = 1000 * 30
   const INTERVAL = await db.get('INTERVAL').catch(() => 840)
   let nickname = await db.get('nickname').catch(() => undefined)
@@ -39,7 +38,7 @@ module.exports = async ({ state, db }) => {
   console.log(`using: ${wsURL}`)
   state.nickname = nickname
 
-  const dd = new DDAtHome(wsURL, { PARALLEL, PING_INTERVAL, INTERVAL })
+  const dd = new DDAtHome(wsURL, { PING_INTERVAL, INTERVAL })
 
   dd.on('open', () => {
     state.INTERVAL = dd.INTERVAL
@@ -53,7 +52,7 @@ module.exports = async ({ state, db }) => {
 
   dd.on('done', (now, duration, url) => {
     state.delay = Math.round(process.uptime() * 1000 / state.completeNumNow)
-    console.log(`job complete ${(duration / 1000).toFixed(2)}s`, state.delay, INTERVAL * PARALLEL - Date.now() + now)
+    console.log(`job complete ${(duration / 1000).toFixed(2)}s`, state.delay)
     state.log = url
     state.completeNum++
     state.completeNumNow++
