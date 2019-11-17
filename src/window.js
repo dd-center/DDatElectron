@@ -32,6 +32,14 @@ const createWindow = async () => {
 
 app.on('window-all-closed', () => {})
 
+app.on('activate', () => {
+  if (win) {
+    win.show()
+  } else {
+    createWindow()
+  }
+})
+
 const getWin = () => win
 
 module.exports = { getWin, createWindow }
