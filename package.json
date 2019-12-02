@@ -29,6 +29,6 @@
     "electron-builder": "^22.1.0",
     "electron-notarize": "^0.2.0",
     "git-last-commit": "^1.0.0",
-    "got": "^9.6.0"
+    "got": "^10.0.1"
   }
 }
