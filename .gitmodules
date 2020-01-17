@@ -1,0 +1,3 @@
+[submodule "DDatHome-nodejs"]
+	path = DDatHome-nodejs
+	url = https://github.com/dd-center/DDatHome-nodejs.git

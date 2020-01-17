@@ -5,7 +5,7 @@
   "private": true,
   "main": "index.js",
   "dependencies": {
-    "ddatnodejs": "dd-center/DDatHome-nodejs",
+    "ddatnodejs": "file:DDatHome-nodejs",
     "electron-updater": "^4.1.2",
     "level": "^6.0.0",
     "moment": "^2.24.0"

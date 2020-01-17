@@ -34,6 +34,8 @@ Cluster Manager, Protocol, available clients: <https://github.com/dd-center/Clus
 #### 安装
 
 ```sh
+git submodule init
+git submodule update
 npm install
 ```
 
