@@ -25,7 +25,7 @@
   },
   "homepage": "https://github.com/dd-center/DDatElectron#readme",
   "devDependencies": {
-    "electron": "^7.0.0",
+    "electron": "^8.0.0",
     "electron-builder": "^22.1.0",
     "electron-notarize": "^0.2.0",
     "git-last-commit": "^1.0.0",
