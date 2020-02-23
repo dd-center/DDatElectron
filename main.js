@@ -21,15 +21,19 @@ new Vue({
       updateDownloaded: undefined,
       nickname: undefined,
       log: undefined,
+      danmaku: undefined,
       pending: undefined,
       pulls: undefined,
       online: undefined,
       homes: []
     },
     logs: [],
+    danmakus: [],
     uptime: undefined,
     interval: undefined,
-    nickname: undefined
+    nickname: undefined,
+    danmaku: '',
+    danmakuWait: false
   },
   watch: {
     interval(value) {
@@ -45,9 +49,28 @@ new Vue({
       if (this.logs.length > 233) {
         this.logs.pop()
       }
+    },
+    'state.danmaku'([nickname, danmaku]) {
+      this.danmakus.unshift([nickname, danmaku])
+      if (this.danmakus.length > 25) {
+        this.danmakus.pop()
+      }
     }
   },
   methods: {
+    send(e) {
+      e.preventDefault()
+      if (this.danmaku && !this.danmakuWait) {
+        this.danmakuWait = true
+        setTimeout(() => {
+          this.danmakuWait = false
+        }, 1000)
+
+        ipcRenderer.send('danmaku', this.danmaku)
+
+        this.danmaku = ''
+      }
+    },
     close() {
       ipcRenderer.invoke('close')
     },
@@ -77,6 +100,10 @@ new Vue({
     const logs = await get('logs')
     logs.shift()
     this.logs = logs
+
+    const danmakus = await get('danmakus')
+    danmakus.shift()
+    this.danmakus = danmakus
 
     ipcRenderer.on('stateUpdate', (_events, key, value) => {
       this.state[key] = value

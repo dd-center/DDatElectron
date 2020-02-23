@@ -63,6 +63,13 @@ module.exports = async ({ state, db }) => {
     console.log('closed', n, reason)
   })
 
+  dd.on('payload', ({ type, data }) => {
+    if (type === 'danmaku') {
+      const { nickname, danmaku } = data
+      state.danmaku = [nickname, danmaku]
+    }
+  })
+
   ;
 
   (f => w => f(f, w()))
@@ -100,6 +107,7 @@ module.exports = async ({ state, db }) => {
     dd.url = makeURL(name)
     nickname = name
   }
+  const sendDanmaku = danmaku => dd.ask({ type: 'danmaku', data: danmaku })
 
-  return { getWs, updateInterval, updateNickname }
+  return { getWs, updateInterval, updateNickname, sendDanmaku }
 }

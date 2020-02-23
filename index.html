@@ -64,6 +64,36 @@
 
     <section class="section">
       <div class="container">
+        <h1 class="title">弹幕</h1>
+        <h2 class="subtitle">Danmaku</h2>
+      </div>
+      <br>
+
+      <form @submit="send">
+        <div class="field has-addons">
+          <div class="control is-expanded">
+            <input class="input" type="text" placeholder="弹幕" v-model="danmaku">
+          </div>
+          <div class="control">
+            <button class="button is-info" type="submit" :disabled="danmakuWait">
+              发送
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <br>
+
+      <p v-for="[nickname, danmaku] in danmakus">
+        <b>{{nickname}}:</b> {{danmaku}}
+      </p>
+
+    </section>
+
+    <hr>
+
+    <section class="section">
+      <div class="container">
         <h1 class="title">状态</h1>
         <h2 class="subtitle">Service</h2>
       </div>
