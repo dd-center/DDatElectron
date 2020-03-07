@@ -79,7 +79,6 @@ module.exports = async ({ state, db }) => {
       const pause = wait(233)
       if (dd.ws.readyState === 1) {
         state.pending = await dd.ask('pending').catch(() => state.pending)
-        state.pulls = await dd.ask('pulls').catch(() => state.pulls)
       }
       await pause
     }
@@ -90,6 +89,7 @@ module.exports = async ({ state, db }) => {
         const pause = wait(1000 * 5)
         state.homes = await dd.ask('homes').catch(() => state.homes)
         state.online = await dd.ask('online').catch(() => state.online)
+        state.power = await dd.ask('power').catch(() => state.power)
         await pause
       } else {
         await wait(500)

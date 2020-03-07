@@ -23,7 +23,7 @@ new Vue({
       log: undefined,
       danmaku: undefined,
       pending: undefined,
-      pulls: undefined,
+      power: undefined,
       online: undefined,
       homes: []
     },

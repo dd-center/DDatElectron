@@ -62,7 +62,7 @@ module.exports = ({ getWin, state, stateEmitter, getWs, updateInterval, quitAndI
   subscribe('updateProgress')
   subscribe('updateDownloaded')
   subscribe('pending')
-  subscribe('pulls')
+  subscribe('power')
   subscribe('online')
   subscribe('homes')
 

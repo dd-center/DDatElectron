@@ -22,6 +22,10 @@
       padding-left: 2px;
     }
 
+    .cursorHelp {
+      cursor: help;
+    }
+
   </style>
 </head>
 
@@ -113,8 +117,8 @@
         </div>
         <div class="level-item">
           <div>
-            <p class="heading">Pulls</p>
-            <p class="title">{{state.pulls}}</p>
+            <p class="heading cursorHelp" title="每分钟处理能力">DD力</p>
+            <p class="title">{{state.power}}</p>
           </div>
         </div>
       </nav>
