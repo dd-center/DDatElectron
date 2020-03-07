@@ -6,6 +6,8 @@ const { GitProcess } = require('dugite')
 const builder = require('electron-builder')
 const Platform = builder.Platform
 
+const notarize = require('./notarize')
+
 GitProcess.exec(['log', '-1', '--format="%s"'], process.cwd()).then(async ({ stdout }) => {
   const { body: vue } = await got('https://vuejs.org/js/vue.min.js')
   await fs.writeFile('vue/vue.js', vue)
@@ -18,7 +20,7 @@ GitProcess.exec(['log', '-1', '--format="%s"'], process.cwd()).then(async ({ std
     targets: Platform.current().createTarget(),
     config: {
       appId: 'center.dd.DDatElectron',
-      afterSign: publish ? join(__dirname, 'notarize.js') : undefined,
+      afterSign: publish ? notarize : undefined,
       mac: {
         extendInfo: {
           LSUIElement: 1
