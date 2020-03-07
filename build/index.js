@@ -20,7 +20,7 @@ GitProcess.exec(['log', '-1', '--format="%s"'], process.cwd()).then(async ({ std
     targets: Platform.current().createTarget(),
     config: {
       appId: 'center.dd.DDatElectron',
-      afterSign: publish ? notarize : undefined,
+      afterSign: notarize,
       mac: {
         extendInfo: {
           LSUIElement: 1
