@@ -1,7 +1,6 @@
 const { notarize } = require('electron-notarize')
 
 module.exports = ({ electronPlatformName, appOutDir, packager }) => {
-  console.log('electronPlatformName', electronPlatformName)
   if (electronPlatformName !== 'darwin') {
     return
   }
