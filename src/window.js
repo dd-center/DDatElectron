@@ -5,6 +5,8 @@ const ready = once(app, 'ready')
 
 let win
 
+app.allowRendererProcessReuse = true
+
 const createWindow = async () => {
   await ready
   win = new BrowserWindow({
