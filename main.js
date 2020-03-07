@@ -23,7 +23,7 @@ new Vue({
       log: undefined,
       danmaku: undefined,
       pending: undefined,
-      power: undefined,
+      power: 0,
       online: undefined,
       homes: []
     },
@@ -94,6 +94,13 @@ new Vue({
           version
         }))
         .sort(({ resolves: a }, { resolves: b }) => b - a)
+    },
+    powerSec() {
+      const round = this.state.power / 60
+      if (round < 1) {
+        return Math.round(round * 10) / 10
+      }
+      return Math.round(round)
     }
   },
   async created() {
