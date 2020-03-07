@@ -5,7 +5,7 @@ const { version } = require('../package.json')
 const git = require('git-last-commit')
 const builder = require('electron-builder')
 const Platform = builder.Platform
-console.log('hi!')
+
 git.getLastCommit(async (_err, commit) => {
   const { body: vue } = await got('https://vuejs.org/js/vue.min.js')
   await fs.writeFile('vue/vue.js', vue)
