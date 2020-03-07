@@ -2,15 +2,18 @@ const fs = require('fs').promises
 const { join } = require('path')
 const got = require('got')
 const { version } = require('../package.json')
-const git = require('git-last-commit')
+const { GitProcess } = require('dugite')
 const builder = require('electron-builder')
 const Platform = builder.Platform
 
-git.getLastCommit(async (_err, commit) => {
+GitProcess.exec(['log', '-1', '--format="%s"'], process.cwd()).then(async ({ stdout }) => {
   const { body: vue } = await got('https://vuejs.org/js/vue.min.js')
   await fs.writeFile('vue/vue.js', vue)
-  const publish = version === commit.subject
+
+  const subject = stdout.replace(/"/g, '').replace(/\n/g, '')
+  const publish = version === subject
   console.log('publish', publish)
+
   await builder.build({
     targets: Platform.current().createTarget(),
     config: {
