@@ -207,6 +207,20 @@
         </template>
       </div>
     </section>
+
+    <hr>
+
+    <section class="section">
+      <div class="container">
+        <h1 class="title" title="可能会忘记写">更新日志</h1>
+        <div v-for="[version, messages] in updates" :key="`update_${version}`">
+          <b>{{version}}</b>
+          <p v-for="(message, i) in messages" :key="`updateMessage_${version}_${i}`">
+            {{message}}
+          </p>
+        </div>
+      </div>
+    </section>
   </div>
 
 </body>

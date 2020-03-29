@@ -4,6 +4,13 @@ const { ipcRenderer } = require('electron')
 
 const Vue = window.Vue
 
+const updates = [
+    ['1.7.5', `第一次写更新日志
+    有时间把之前的补上吧`]
+  ]
+  .map(([version, message]) => [version, message.split('\n')])
+  .reverse()
+
 const get = key => ipcRenderer.invoke('state', key)
 
 new Vue({
@@ -33,7 +40,8 @@ new Vue({
     interval: undefined,
     nickname: undefined,
     danmaku: '',
-    danmakuWait: false
+    danmakuWait: false,
+    updates
   },
   watch: {
     interval(value) {
