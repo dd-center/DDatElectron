@@ -7,7 +7,7 @@ Windows: <https://dd.center/api/latest/ddatelectron/windows>
 
 macOS: <https://dd.center/api/latest/ddatelectron/mac>
 
-<!-- Linux: <https://dd.center/api/latest/ddatelectron/linux> -->
+Linux: (未经测试) <https://dd.center/api/latest/ddatelectron/linux>
 
 
 
@@ -15,7 +15,9 @@ Github Release: <https://github.com/dd-center/DDatElectron/releases/latest>
 
 ![screenshot](./doc/screenshot.png)
 
-Cluster Manager, Protocol, available clients: <https://github.com/dd-center/Cluster-center>
+使用WebSocket获取任务，做完之后再发回去www
+
+服务端代码，通讯协议，其他客户端，请看: <https://github.com/dd-center/Cluster-center>
 
 ### 用到的部分开源项目
 
