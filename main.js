@@ -5,8 +5,9 @@ const { ipcRenderer } = require('electron')
 const Vue = window.Vue
 
 const updates = [
-    ['1.7.5', `
+    ['1.8.0', `
     - 改进Main-Renderer进程的IPC弹幕同步以及渲染弹幕的逻辑
+    - 记住50个弹幕历史→_→!
     第一次写更新日志
     有时间把之前的补上吧`]
   ]

@@ -23,7 +23,7 @@ stateEmitter.on('log', log => {
 })
 
 stateEmitter.on('danmaku', ([nickname, danmaku]) => {
-  if (state.danmakus.length > 25) {
+  if (state.danmakus.length > 50) {
     state.danmakus.pop()
   }
   state.danmakus = [

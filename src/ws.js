@@ -48,6 +48,10 @@ module.exports = async ({ state, db }) => {
     console.log('DD@Home connected')
   })
 
+  dd.on('open', async () => {
+    state.danmakus = [...await dd.ask('danmakuHistory')].reverse()
+  })
+
   dd.on('url', url => console.log('job received', url))
 
   dd.on('done', (now, duration, url) => {
