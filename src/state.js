@@ -23,10 +23,12 @@ stateEmitter.on('log', log => {
 })
 
 stateEmitter.on('danmaku', ([nickname, danmaku]) => {
-  state.danmakus.unshift([nickname, danmaku])
   if (state.danmakus.length > 25) {
     state.danmakus.pop()
   }
+  state.danmakus = [
+    [nickname, danmaku], ...state.danmakus
+  ]
 })
 
 module.exports = { state, stateEmitter }

@@ -54,7 +54,7 @@ module.exports = ({ getWin, state, stateEmitter, getWs, updateInterval, quitAndI
   subscribe('completeNumNow')
   subscribe('delay')
   subscribe('log')
-  subscribe('danmaku')
+  subscribe('danmakus')
   subscribe('INTERVAL')
   subscribe('nickname')
   subscribe('url')

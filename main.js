@@ -5,7 +5,9 @@ const { ipcRenderer } = require('electron')
 const Vue = window.Vue
 
 const updates = [
-    ['1.7.5', `第一次写更新日志
+    ['1.7.5', `
+    - 改进Main-Renderer进程的IPC弹幕同步以及渲染弹幕的逻辑
+    第一次写更新日志
     有时间把之前的补上吧`]
   ]
   .map(([version, message]) => [version, message.split('\n')])
@@ -28,14 +30,13 @@ new Vue({
       updateDownloaded: undefined,
       nickname: undefined,
       log: undefined,
-      danmaku: undefined,
       pending: undefined,
       power: 0,
       online: undefined,
-      homes: []
+      homes: [],
+      danmakus: []
     },
     logs: [],
-    danmakus: [],
     uptime: undefined,
     interval: undefined,
     nickname: undefined,
@@ -58,12 +59,6 @@ new Vue({
         this.logs.pop()
       }
     },
-    'state.danmaku'([nickname, danmaku]) {
-      this.danmakus.unshift([nickname, danmaku])
-      if (this.danmakus.length > 25) {
-        this.danmakus.pop()
-      }
-    }
   },
   methods: {
     send(e) {
@@ -115,10 +110,6 @@ new Vue({
     const logs = await get('logs')
     logs.shift()
     this.logs = logs
-
-    const danmakus = await get('danmakus')
-    danmakus.shift()
-    this.danmakus = danmakus
 
     ipcRenderer.on('stateUpdate', (_events, key, value) => {
       this.state[key] = value
