@@ -5,14 +5,13 @@ const { ipcRenderer } = require('electron')
 const Vue = window.Vue
 
 const updates = [
-    ['1.8.0', `
+  ['1.8.1', '- 更新electron-updater修复一个导致软件无法更新的问题'],
+  ['1.8.0', `
     - 改进Main-Renderer进程的IPC弹幕同步以及渲染弹幕的逻辑
     - 记住50个弹幕历史→_→!
     第一次写更新日志
     有时间把之前的补上吧`]
-  ]
-  .map(([version, message]) => [version, message.split('\n')])
-  .reverse()
+].map(([version, message]) => [version, message.split('\n')]).reverse()
 
 const get = key => ipcRenderer.invoke('state', key)
 

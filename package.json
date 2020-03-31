@@ -6,7 +6,7 @@
   "main": "index.js",
   "dependencies": {
     "ddatnodejs": "file:DDatHome-nodejs",
-    "electron-updater": "^4.1.2",
+    "electron-updater": "^4.2.5",
     "level": "^6.0.0",
     "moment": "^2.24.0"
   },
