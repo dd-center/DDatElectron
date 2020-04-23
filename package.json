@@ -29,6 +29,6 @@
     "electron": "^8.0.1",
     "electron-builder": "^22.1.0",
     "electron-notarize": "^0.2.0",
-    "got": "^10.0.3"
+    "got": "^11.0.2"
   }
 }
