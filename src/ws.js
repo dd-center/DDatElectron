@@ -1,5 +1,7 @@
 /* eslint-disable no-unexpected-multiline */
 /* eslint-disable func-call-spacing */
+const gql = require('graphql-tag')
+
 const { version: VERSION } = require('../package.json')
 const DDAtHome = require('ddatnodejs')
 
@@ -39,6 +41,8 @@ module.exports = async ({ state, db }) => {
   state.nickname = nickname
 
   const dd = new DDAtHome(wsURL, { PING_INTERVAL, INTERVAL })
+
+  const query = document => dd.ask({ type: 'GraphQL', document })
 
   dd.on('open', () => {
     state.INTERVAL = dd.INTERVAL
@@ -82,7 +86,8 @@ module.exports = async ({ state, db }) => {
     while (true) {
       const pause = wait(233)
       if (dd.ws.readyState === 1) {
-        state.pending = await dd.ask('pending').catch(() => state.pending)
+        const { pending } = await query(gql`{ pending }`).catch(() => state)
+        state.pending = pending
       }
       await pause
     }
@@ -91,9 +96,10 @@ module.exports = async ({ state, db }) => {
     while (true) {
       if (dd.ws.readyState === 1) {
         const pause = wait(1000 * 5)
-        state.homes = await dd.ask('homes').catch(() => state.homes)
-        state.online = await dd.ask('online').catch(() => state.online)
-        state.power = await dd.ask('power').catch(() => state.power)
+        const { homes, online, power } = await query(gql`{ online power: DD homes { id resolves: success rejects: fail runtime platform version name docker uuid } }`).catch(() => state)
+        state.homes = homes
+        state.online = online
+        state.power = power
         await pause
       } else {
         await wait(500)
