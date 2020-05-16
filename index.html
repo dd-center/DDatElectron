@@ -171,6 +171,25 @@
       <br>
 
       <div class="field">
+        <label class="label">UUID</label>
+      </div>
+      <div class="field has-addons">
+        <div class="control is-expanded">
+          <input class="input" type="text" v-model="uuid" placeholder="用于记录状态">
+        </div>
+        <div class="control">
+          <a class="button" @click="randomUUID">
+            随机
+          </a>
+        </div>
+      </div>
+      <div class="field">
+        <p class="help">当前: {{state.uuid}}</p>
+      </div>
+
+      <br>
+
+      <div class="field">
         <p class="control">
           <button class="button is-inverted is-outlined is-rounded" @click="close">
             重载

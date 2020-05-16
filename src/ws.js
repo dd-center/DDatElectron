@@ -1,6 +1,7 @@
 /* eslint-disable no-unexpected-multiline */
 /* eslint-disable func-call-spacing */
 const gql = require('graphql-tag')
+const { v4: uuidv4 } = require('uuid')
 
 const { version: VERSION } = require('../package.json')
 const DDAtHome = require('ddatnodejs')
@@ -16,12 +17,15 @@ const base = process.env.development ? 'ws://0.0.0.0:9013' : 'wss://cluster.vtbs
 
 const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
 
-const makeURL = nickname => {
+const makeURL = ({ nickname, uuid }) => {
   const url = new URL(base)
   url.searchParams.set('runtime', `electronv${process.versions.electron}`)
   url.searchParams.set('version', VERSION)
   url.searchParams.set('platform', process.platform)
 
+  if (uuid) {
+    url.searchParams.set('uuid', uuid)
+  }
   if (nickname) {
     url.searchParams.set('name', nickname)
   }
@@ -33,8 +37,9 @@ module.exports = async ({ state, db }) => {
   const PING_INTERVAL = 1000 * 30
   const INTERVAL = await db.get('INTERVAL').catch(() => 840)
   let nickname = await db.get('nickname').catch(() => undefined)
+  let uuid = await db.get('uuid').catch(() => uuidv4())
 
-  const wsURL = makeURL(nickname)
+  const wsURL = makeURL({ nickname, uuid })
 
   state.log = `using: ${wsURL}`
   console.log(`using: ${wsURL}`)
@@ -48,6 +53,7 @@ module.exports = async ({ state, db }) => {
     state.INTERVAL = dd.INTERVAL
     state.url = dd.url.href
     state.nickname = nickname
+    state.uuid = uuid
     state.log = 'DD@Home connected'
     console.log('DD@Home connected')
   })
@@ -114,10 +120,15 @@ module.exports = async ({ state, db }) => {
   }
   const updateNickname = name => {
     db.put('nickname', name)
-    dd.url = makeURL(name)
     nickname = name
+    dd.url = makeURL({ nickname, uuid })
+  }
+  const updateUUID = (id = uuidv4()) => {
+    db.put('uuid', id)
+    uuid = id
+    dd.url = makeURL({ nickname, uuid })
   }
   const sendDanmaku = danmaku => dd.ask({ type: 'danmaku', data: danmaku })
 
-  return { getWs, updateInterval, updateNickname, sendDanmaku }
+  return { getWs, updateInterval, updateNickname, sendDanmaku, updateUUID }
 }

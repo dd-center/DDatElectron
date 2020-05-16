@@ -2,10 +2,11 @@ const { ipcMain, BrowserWindow: { fromWebContents } } = require('electron')
 const moment = require('moment')
 moment.locale('zh-cn')
 
-module.exports = ({ getWin, state, stateEmitter, getWs, updateInterval, quitAndInstall, createWindow, updateNickname, sendDanmaku }) => {
+module.exports = ({ getWin, state, stateEmitter, getWs, updateInterval, quitAndInstall, createWindow, updateNickname, sendDanmaku, updateUUID }) => {
   ipcMain.handle('state', (_e, key) => state[key])
   ipcMain.handle('updateInterval', (_e, ...values) => updateInterval(...values))
   ipcMain.handle('updateNickname', (_e, ...values) => updateNickname(...values))
+  ipcMain.handle('updateUUID', (_e, ...values) => updateUUID(...values))
 
   ipcMain.handle('close', _e => {
     const ws = getWs()
@@ -65,6 +66,7 @@ module.exports = ({ getWin, state, stateEmitter, getWs, updateInterval, quitAndI
   subscribe('power')
   subscribe('online')
   subscribe('homes')
+  subscribe('uuid')
 
   createWindow()
 }

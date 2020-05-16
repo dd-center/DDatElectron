@@ -10,7 +10,8 @@
     "graphql": "^15.0.0",
     "graphql-tag": "^2.10.3",
     "level": "^6.0.0",
-    "moment": "^2.24.0"
+    "moment": "^2.24.0",
+    "uuid": "^8.0.0"
   },
   "scripts": {
     "start": "electron .",

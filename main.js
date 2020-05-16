@@ -1,6 +1,8 @@
 /* eslint-disable no-new */
-const meta = require('./package.json')
 const { ipcRenderer } = require('electron')
+const { v4: uuidv4 } = require('uuid')
+
+const meta = require('./package.json')
 
 const Vue = window.Vue
 
@@ -34,12 +36,14 @@ new Vue({
       power: 0,
       online: undefined,
       homes: [],
-      danmakus: []
+      danmakus: [],
+      uuid: undefined
     },
     logs: [],
     uptime: undefined,
     interval: undefined,
     nickname: undefined,
+    uuid: undefined,
     danmaku: '',
     danmakuWait: false,
     updates
@@ -58,7 +62,7 @@ new Vue({
       if (this.logs.length > 233) {
         this.logs.pop()
       }
-    },
+    }
   },
   methods: {
     send(e) {
@@ -75,10 +79,16 @@ new Vue({
       }
     },
     close() {
+      if (this.uuid) {
+        ipcRenderer.invoke('updateUUID', this.uuid)
+      }
       ipcRenderer.invoke('close')
     },
     restart() {
       ipcRenderer.invoke('restart')
+    },
+    randomUUID() {
+      this.uuid = uuidv4()
     }
   },
   computed: {
