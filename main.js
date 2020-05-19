@@ -8,12 +8,25 @@ const meta = require('./package.json')
 const Vue = window.Vue
 
 const updates = [
-  ['1.8.1', '- 更新electron-updater修复一个导致软件无法更新的问题'],
+  ['1.0.1', '- 修复macOS一些兼容性问题'],
+  ['1.1.0', '- 显示日志'],
+  ['1.2.1', '- Electron升级到v7'],
+  ['1.2.2', '- 降低并行, 加大间隔过小的警告范围'],
+  ['1.2.3', '- 降低并行, 增加间隔'],
+  ['1.5.0', '- 核心依赖DD@Nodejs'],
+  ['1.6.0', '- 发弹幕功能'],
+  ['1.7.0', '- 删去Pulls, 显示DD力'],
+  ['1.7.4', '- 改进macOS的Notarize过程'],
   ['1.8.0', `
     - 改进Main-Renderer进程的IPC弹幕同步以及渲染弹幕的逻辑
     - 记住50个弹幕历史→_→!
     第一次写更新日志
-    有时间把之前的补上吧`]
+    有时间把之前的补上吧`],
+  ['1.8.1', '- 更新electron-updater修复一个导致软件无法更新的问题'],
+  ['1.9.0', `
+    -  把API改成GraphQL了
+    -  记住数据的功能
+    -  补上了一部分之前的更新记录`]
 ].map(([version, message]) => [version, message.split('\n')]).reverse()
 
 const get = key => ipcRenderer.invoke('state', key)
