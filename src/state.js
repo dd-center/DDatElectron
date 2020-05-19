@@ -6,8 +6,8 @@ const state = new Proxy({
   completeNum: 0,
   completeNumNow: 0,
   logs: [],
-  danmakus: [],
-  homes: []
+  homes: [],
+  danmakuLength: 0
 }, {
   set(target, key, value) {
     target[key] = value
@@ -20,15 +20,6 @@ stateEmitter.on('log', log => {
   if (state.logs.length > 233) {
     state.logs.pop()
   }
-})
-
-stateEmitter.on('danmaku', ([nickname, danmaku]) => {
-  if (state.danmakus.length > 50) {
-    state.danmakus.pop()
-  }
-  state.danmakus = [
-    [nickname, danmaku], ...state.danmakus
-  ]
 })
 
 module.exports = { state, stateEmitter }

@@ -47,7 +47,13 @@ module.exports = async ({ state, db }) => {
 
   const dd = new DDAtHome(wsURL, { PING_INTERVAL, INTERVAL })
 
-  const query = document => dd.ask({ type: 'GraphQL', document })
+  const query = async (document, variableValues = {}) => {
+    const result = await dd.ask({ type: 'GraphQL', document, variableValues })
+    if (!result) {
+      throw new Error('query failed')
+    }
+    return result
+  }
 
   dd.on('open', () => {
     state.INTERVAL = dd.INTERVAL
@@ -59,7 +65,8 @@ module.exports = async ({ state, db }) => {
   })
 
   dd.on('open', async () => {
-    state.danmakus = [...await dd.ask('danmakuHistory')].reverse()
+    const { danmaku: { length = state.danmakuLength } } = await query(gql`query {danmaku{length}}`).catch(() => ({}))
+    state.danmakuLength = length
   })
 
   dd.on('url', url => console.log('job received', url))
@@ -77,10 +84,13 @@ module.exports = async ({ state, db }) => {
     console.log('closed', n, reason)
   })
 
-  dd.on('payload', ({ type, data }) => {
+  dd.on('payload', ({ type }) => {
     if (type === 'danmaku') {
-      const { nickname, danmaku } = data
-      state.danmaku = [nickname, danmaku]
+      query(gql`{danmaku{length}}`)
+        .then(({ danmaku: { length } }) => {
+          state.danmakuLength = length
+        })
+        .catch(() => {})
     }
   })
 
@@ -130,5 +140,5 @@ module.exports = async ({ state, db }) => {
   }
   const sendDanmaku = danmaku => dd.ask({ type: 'danmaku', data: danmaku })
 
-  return { getWs, updateInterval, updateNickname, sendDanmaku, updateUUID }
+  return { getWs, updateInterval, updateNickname, sendDanmaku, updateUUID, query }
 }

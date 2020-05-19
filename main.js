@@ -1,6 +1,7 @@
 /* eslint-disable no-new */
 const { ipcRenderer } = require('electron')
 const { v4: uuidv4 } = require('uuid')
+const gql = require('graphql-tag')
 
 const meta = require('./package.json')
 
@@ -16,6 +17,15 @@ const updates = [
 ].map(([version, message]) => [version, message.split('\n')]).reverse()
 
 const get = key => ipcRenderer.invoke('state', key)
+const query = async (document, variableValues) => {
+  const result = await ipcRenderer.invoke('query', document, variableValues)
+  if (!result) {
+    throw new Error('query failed')
+  }
+  return result
+}
+
+window.query = query
 
 new Vue({
   el: '#main',
@@ -36,8 +46,14 @@ new Vue({
       power: 0,
       online: undefined,
       homes: [],
-      danmakus: [],
-      uuid: undefined
+      danmakuLength: 0,
+      uuid: undefined,
+      danmaku: undefined
+    },
+    displayDanmaku: {
+      danmakuPack: [],
+      showingPack: [],
+      observer: undefined
     },
     logs: [],
     uptime: undefined,
@@ -62,6 +78,24 @@ new Vue({
       if (this.logs.length > 233) {
         this.logs.pop()
       }
+    },
+    async danmakuDetectors(value) {
+      await this.$nextTick()
+      value.forEach(({ i }) => {
+        this.displayDanmaku.observer.observe(document.getElementById(`danmakuDetectors_${i}`))
+      })
+    },
+    'displayDanmaku.showingPack'(value) {
+      value.forEach((w, i) => {
+        if (w) {
+          if (!this.displayDanmaku.danmakuPack[i]) {
+            this.getDanmaku(i)
+          }
+        }
+      })
+    },
+    'state.danmakuLength'() {
+      this.getDanmaku(this.displayDanmaku.danmakuPack.length - 1)
     }
   },
   methods: {
@@ -89,6 +123,17 @@ new Vue({
     },
     randomUUID() {
       this.uuid = uuidv4()
+    },
+    async getDanmaku(i) {
+      const number = Math.min(100, this.state.danmakuLength - i * 100)
+      const skip = i * 100
+      const { danmaku: { danmaku } = {} } = await query(gql`query getDanmaku($number:Int!,$skip:Int!) {danmaku{danmaku(number:$number, skip:$skip){name text}}}`, { number, skip })
+        .catch(() => ({}))
+      if (danmaku) {
+        Vue.set(this.displayDanmaku.danmakuPack, i, danmaku
+          .map(({ name, text }, i) => ({ name, text, n: i + skip }))
+          .map(({ name, text, n }) => ({ name, text, n, bottom: n * 24, i: n % 300 })))
+      }
     }
   },
   computed: {
@@ -114,6 +159,24 @@ new Vue({
         return Math.round(round * 10) / 10
       }
       return Math.round(round)
+    },
+    danmakuHeight() {
+      return this.state.danmakuLength * 24
+    },
+    danmakuDetectors() {
+      const num = Math.trunc(this.state.danmakuLength / 100) + 1
+      const height = 100 * 24
+      return Array(num)
+        .fill(height)
+        .map((height, i) => ({ height, bottom: i * height, i }))
+    },
+    danmakus() {
+      const blank = Array(300).fill(-100).map((bottom, i) => ({ bottom, i }))
+      const showing = this.displayDanmaku.danmakuPack.filter((_, i) => this.displayDanmaku.showingPack[i])
+      showing.flat().forEach(({ name, text, bottom, i }) => {
+        blank[i] = { name, text, bottom, i }
+      })
+      return blank
     }
   },
   async created() {
@@ -136,6 +199,19 @@ new Vue({
       return interval
     }
     setInterval(interval(), 1000)
+
+    this.displayDanmaku.observer = new IntersectionObserver(entries => entries.forEach(({ isIntersecting, target }) => {
+      const n = Number(target.getAttribute('n'))
+      if (isIntersecting) {
+        Vue.set(this.displayDanmaku.showingPack, n, true)
+      } else {
+        Vue.set(this.displayDanmaku.showingPack, n, false)
+      }
+    }), {
+      root: document.getElementById('danmakuBox'),
+      rootMargin: '600px 0px 600px 0px',
+      thresholds: [0]
+    })
   },
   async mounted() {
     document.getElementById('main').style.display = 'block'

@@ -31,6 +31,26 @@
       overflow: auto;
     }
 
+    .danmakuBox {
+      padding-top: 0;
+      height: calc(100vh - 200px);
+      min-height: 300px;
+      overflow-y: auto;
+    }
+
+    .danmakuContainer {
+      position: relative;
+      overflow-y: hidden;
+    }
+
+    .danmakuDetectors {
+      position: absolute;
+    }
+
+    .danmaku {
+      position: absolute;
+    }
+
   </style>
 </head>
 
@@ -91,12 +111,16 @@
         </div>
       </form>
 
-      <br>
+    </section>
 
-      <p v-for="[nickname, danmaku] in state.danmakus">
-        <b>{{nickname}}:</b> {{danmaku}}
-      </p>
-
+    <section class="section danmakuBox" id="danmakuBox">
+      <div class="danmakuContainer" :style="{ height: `${danmakuHeight}px` }">
+        <p class="danmaku" v-for="({name,text,bottom,i}) in danmakus" :key="`danmaku_${i}`" :style="{ bottom:`${bottom}px` }">
+          <b>{{name}}:</b>{{text}}
+        </p>
+        <div class="danmakuDetectors" v-for="({height,bottom,i}) in danmakuDetectors" :style="{ height:`${height}px`, bottom:`${bottom}px` }" :id="`danmakuDetectors_${i}`" :key="`danmakuDetectors_${i}`" :n="i">
+        </div>
+      </div>
     </section>
 
     <hr>
