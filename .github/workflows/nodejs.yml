@@ -40,7 +40,7 @@ jobs:
 
   gitee:
     needs: [build]
-    runs-on: maxOS-latest
+    runs-on: macOS-latest
 
     steps:
     - uses: actions/checkout@v1
