@@ -3,9 +3,11 @@ const { writeFile } = require('fs').promises
 const { join } = require('path')
 
 const download = url => got(url).buffer()
-const downloadJSON = url => got(url).json()
+const downloadJSON = (url, options) => got(url, options).json()
 
-downloadJSON('https://api.github.com/repos/dd-center/ddatelectron/releases')
+const { GITHUB_TOKEN } = process.env
+
+downloadJSON('https://api.github.com/repos/dd-center/ddatelectron/releases', { headers: { Authorization: `token ${GITHUB_TOKEN}` } })
   .then(async ([{ assets }]) => {
     await assets
       .map(({ name, browser_download_url: url }) => ({ name, url }))

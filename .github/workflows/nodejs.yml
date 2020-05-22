@@ -64,6 +64,8 @@ jobs:
         git clone git@gitee.com:simon3000/ddc.git
     - name: Download
       run: node build/gitee.js
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Push to Gitee
       run: |
         cd ddc
