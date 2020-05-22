@@ -69,6 +69,7 @@ jobs:
     - name: Push to Gitee
       run: |
         cd ddc
+        git add .
         git commit -am 'update'
         git push
         
