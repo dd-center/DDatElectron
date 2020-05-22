@@ -58,7 +58,10 @@ jobs:
       with:
           ssh-private-key: ${{ secrets.GITEE_SSH_PRIVATE_KEY }}
     - name: clone gitee/ddc
-      run: git clone git@gitee.com:simon3000/ddc.git
+      run: |
+        mkdir -p ~/.ssh
+        ssh-keyscan gitee.com >> ~/.ssh/known_hosts
+        git clone git@gitee.com:simon3000/ddc.git
     - name: Download
       run: node build/gitee.js
     - name: Push to Gitee
