@@ -38,38 +38,3 @@ jobs:
         CSC_LINK: ${{ secrets.CSC_LINK }}
         CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
 
-  gitee:
-    needs: [build]
-    runs-on: macOS-latest
-
-    steps:
-    - uses: actions/checkout@v1
-    - name: Use Node.js 13
-      uses: actions/setup-node@v1
-      with:
-        node-version: '13'
-    - name: git submodule init, update
-      run: |
-        git submodule init
-        git submodule update
-    - name: npm install
-      run: npm install
-    - uses: webfactory/ssh-agent@v0.2.0
-      with:
-          ssh-private-key: ${{ secrets.GITEE_SSH_PRIVATE_KEY }}
-    - name: clone gitee/ddc
-      run: |
-        mkdir -p ~/.ssh
-        ssh-keyscan gitee.com >> ~/.ssh/known_hosts
-        git clone git@gitee.com:simon3000/ddc.git
-    - name: Download
-      run: node build/gitee.js
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - name: Push to Gitee
-      run: |
-        cd ddc
-        git add .
-        git commit -am 'update'
-        git push
-        
