@@ -34,7 +34,8 @@ const updates = [
   ['1.9.1', `
     -  修好了弹幕会重叠的问题，感谢@ouuan
     -  显示弹幕时间
-    -  自己的状态粗体显示`]
+    -  自己的状态粗体显示`],
+  ['1.9.2', '- 修好了1.9.1引入的导致不能显示界面问题，感谢@ouuan']
 ].map(([version, message]) => [version, message.split('\n')]).reverse()
 
 const get = key => ipcRenderer.invoke('state', key)
