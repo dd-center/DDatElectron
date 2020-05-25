@@ -65,8 +65,9 @@ module.exports = async ({ state, db }) => {
   })
 
   dd.on('open', async () => {
-    const { danmaku: { length = state.danmakuLength } } = await query(gql`query {danmaku{length}}`).catch(() => ({}))
+    const { danmaku: { length = state.danmakuLength }, id } = await query(gql`query {danmaku{length}, id}`).catch(() => ({}))
     state.danmakuLength = length
+    state.id = id
   })
 
   dd.on('url', url => console.log('job received', url))

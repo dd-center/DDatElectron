@@ -70,6 +70,7 @@ module.exports = ({ getWin, state, stateEmitter, getWs, updateInterval, quitAndI
   subscribe('online')
   subscribe('homes')
   subscribe('uuid')
+  subscribe('id')
 
   createWindow()
 }

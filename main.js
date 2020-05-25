@@ -59,6 +59,7 @@ new Vue({
       homes: [],
       danmakuLength: 0,
       uuid: undefined,
+      id: undefined,
       danmaku: undefined
     },
     displayDanmaku: {
@@ -140,7 +141,7 @@ new Vue({
     async getDanmaku(i) {
       const number = Math.min(100, this.state.danmakuLength - i * 100)
       const skip = i * 100
-      const { danmaku: { danmaku } = {} } = await query(gql`query getDanmaku($number:Int!,$skip:Int!) {danmaku{danmaku(number:$number, skip:$skip){name text}}}`, { number, skip })
+      const { danmaku: { danmaku } = {} } = await query(gql `query getDanmaku($number:Int!,$skip:Int!) {danmaku{danmaku(number:$number, skip:$skip){name text}}}`, { number, skip })
         .catch(() => ({}))
       if (danmaku) {
         Vue.set(this.displayDanmaku.danmakuPack, i, danmaku
