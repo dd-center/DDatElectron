@@ -205,7 +205,7 @@ new Vue({
       const showing = this.displayDanmaku.danmakuPack.filter((_, i) => this.displayDanmaku.showingPack[i])
       showing.flat().forEach(({ name, text, timestamp, bottom, i }) => {
         const momentTime = moment(timestamp)
-        blank[i] = { name, text, time: this.now - timestamp > 1000 * 60 * 60 ? momentTime.calendar() : momentTime.fromNow(), bottom, i }
+        blank[i] = { name, text, absoluteTime: momentTime.local().format(), relativeTime: this.now - timestamp > 1000 * 60 * 60 ? momentTime.calendar() : momentTime.fromNow(), bottom, i }
       })
       return blank
     }
