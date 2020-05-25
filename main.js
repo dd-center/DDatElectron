@@ -235,7 +235,7 @@ new Vue({
       }
     }), {
       root: document.getElementById('danmakuBox'),
-      rootMargin: '600px 0px 600px 0px',
+      rootMargin: '600px 0px 600px 1000000px',
       thresholds: [0]
     })
   },
