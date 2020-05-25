@@ -116,8 +116,9 @@
             <input class="input" type="text" placeholder="弹幕" v-model="danmaku">
           </div>
           <div class="control">
-            <button class="button is-info" type="submit" :disabled="danmakuWait">
-              发送
+            <button class="button is-info" type="submit" :disabled="danmakuWait || longDanmaku">
+              <span v-if="longDanmaku">太长啦: {{danmaku.length}}/256</span>
+              <span v-else>发送</span>
             </button>
           </div>
         </div>

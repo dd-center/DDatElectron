@@ -184,6 +184,9 @@ new Vue({
       }
       return Math.round(round)
     },
+    longDanmaku() {
+      return this.danmaku.length > 256
+    },
     danmakuHeight() {
       return this.state.danmakuLength * 24
     },
