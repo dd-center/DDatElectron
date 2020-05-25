@@ -190,6 +190,9 @@ new Vue({
     longDanmaku() {
       return this.danmaku.length > 256
     },
+    emptyDanmaku() {
+      return this.danmaku.length == 0
+    },
     danmakuHeight() {
       return this.state.danmakuLength * 24
     },
