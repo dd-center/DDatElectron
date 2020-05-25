@@ -30,7 +30,11 @@ const updates = [
   ['1.9.0', `
     -  把API改成GraphQL了
     -  记住数据的功能
-    -  补上了一部分之前的更新记录`]
+    -  补上了一部分之前的更新记录`],
+  ['1.9.1', `
+    -  修好了弹幕会重叠的问题，感谢@ouuan
+    -  显示弹幕时间
+    -  自己的状态粗体显示`
 ].map(([version, message]) => [version, message.split('\n')]).reverse()
 
 const get = key => ipcRenderer.invoke('state', key)
