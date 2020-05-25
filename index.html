@@ -169,11 +169,18 @@
         <table class="table is-striped is-hoverable is-fullwidth">
           <tbody>
             <tr v-for="home in homes" :key="home.id">
-              <td v-if="home.id === state.id"><b>{{home.name}}@{{home.runtime}}</b></td>
-              <td v-else>{{home.name}}@{{home.runtime}}</td>
-              <td>{{home.resolves}}/{{home.sum}}</td>
-              <td>{{home.platform}}</td>
-              <td>{{home.version}}</td>
+              <template v-if="home.id === state.id">
+                <td><b>{{home.name}}@{{home.runtime}}</b></td>
+                <td><b>{{home.resolves}}/{{home.sum}}</b></td>
+                <td><b>{{home.platform}}</b></td>
+                <td><b>{{home.version}}</b></td>
+              </template>
+              <template v-else>
+                <td>{{home.name}}@{{home.runtime}}</td>
+                <td>{{home.resolves}}/{{home.sum}}</td>
+                <td>{{home.platform}}</td>
+                <td>{{home.version}}</td>
+              </template>
             </tr>
           </tbody>
         </table>
