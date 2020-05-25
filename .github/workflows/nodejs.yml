@@ -1,11 +1,6 @@
 name: Node CI
 
-on:
-  push:
-    branches:
-      - 'master'
-    tags-ignore:
-      - '**'
+on: [push, pull_request]
 
 jobs:
   build:
@@ -15,26 +10,43 @@ jobs:
         os: [ubuntu-latest, macOS-latest, windows-latest]
 
     steps:
-    - uses: actions/checkout@v1
-    - name: Use Node.js 13
-      uses: actions/setup-node@v1
-      with:
-        node-version: '13'
-    - name: git submodule init, update
-      run: |
-        git submodule init
-        git submodule update
-    - name: npm install
-      run: |
-        npm install
-    - name: build
-      run: |
-        npm run build
-      env:
-        CI: true
-        GH_TOKEN: ${{ secrets.GH_TOKEN }}
-        APPLEID: ${{ secrets.APPLEID }}
-        APPLEIDPASS: ${{ secrets.APPLEIDPASS }}
-        CSC_LINK: ${{ secrets.CSC_LINK }}
-        CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
+      - uses: actions/checkout@v2
 
+      - name: Use Node.js 13
+        uses: actions/setup-node@v1
+        with:
+          node-version: "13"
+
+      - name: Get npm cache directory
+        id: npm-cache-dir
+        run: echo "::set-output name=dir::$(npm config get cache)"
+
+      - name: Cache dependencies
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.npm-cache-dir.outputs.dir }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Cache install
+        uses: actions/cache@v1
+        with:
+          path: ./node_modules
+          key: ${{ runner.os }}-dep-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-dep-
+
+      - name: Fetch submodules
+        run: git submodule update --init --recursive
+
+      - run: npm install
+
+      - run: npm run build
+        env:
+          CI: true
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          APPLEID: ${{ secrets.APPLEID }}
+          APPLEIDPASS: ${{ secrets.APPLEIDPASS }}
+          CSC_LINK: ${{ secrets.CSC_LINK }}
+          CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
