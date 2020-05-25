@@ -38,8 +38,6 @@ const query = async (document, variableValues) => {
   return result
 }
 
-window.query = query
-
 new Vue({
   el: '#main',
   data: {
@@ -108,7 +106,9 @@ new Vue({
       })
     },
     'state.danmakuLength'() {
-      this.getDanmaku(this.displayDanmaku.danmakuPack.length - 1)
+      if (this.displayDanmaku.danmakuPack.length) {
+        this.getDanmaku(this.displayDanmaku.danmakuPack.length - 1)
+      }
     }
   },
   methods: {
