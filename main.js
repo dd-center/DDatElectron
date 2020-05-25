@@ -3,9 +3,13 @@ const { ipcRenderer } = require('electron')
 const { v4: uuidv4 } = require('uuid')
 const gql = require('graphql-tag')
 
+const moment = require('moment')
+
 const meta = require('./package.json')
 
 const Vue = window.Vue
+
+moment.locale('zh-cn')
 
 const updates = [
   ['1.0.1', '- 修复macOS一些兼容性问题'],
@@ -74,6 +78,7 @@ new Vue({
     uuid: undefined,
     danmaku: '',
     danmakuWait: false,
+    now: Date.now(),
     updates
   },
   watch: {
@@ -141,12 +146,12 @@ new Vue({
     async getDanmaku(i) {
       const number = Math.min(100, this.state.danmakuLength - i * 100)
       const skip = i * 100
-      const { danmaku: { danmaku } = {} } = await query(gql `query getDanmaku($number:Int!,$skip:Int!) {danmaku{danmaku(number:$number, skip:$skip){name text}}}`, { number, skip })
+      const { danmaku: { danmaku } = {} } = await query(gql`query getDanmaku($number:Int!,$skip:Int!) {danmaku{danmaku(number:$number, skip:$skip){name text timestamp}}}`, { number, skip })
         .catch(() => ({}))
       if (danmaku) {
         Vue.set(this.displayDanmaku.danmakuPack, i, danmaku
-          .map(({ name, text }, i) => ({ name, text, n: i + skip }))
-          .map(({ name, text, n }) => ({ name, text, n, bottom: n * 24, i: n % 300 })))
+          .map(({ name, text, timestamp }, i) => ({ name, text, timestamp: Number(timestamp), n: i + skip }))
+          .map(({ name, text, timestamp, n }) => ({ name, text, timestamp, n, bottom: n * 24, i: n % 300 })))
       }
     }
   },
@@ -187,8 +192,9 @@ new Vue({
     danmakus() {
       const blank = Array(300).fill(-100).map((bottom, i) => ({ bottom, i }))
       const showing = this.displayDanmaku.danmakuPack.filter((_, i) => this.displayDanmaku.showingPack[i])
-      showing.flat().forEach(({ name, text, bottom, i }) => {
-        blank[i] = { name, text, bottom, i }
+      showing.flat().forEach(({ name, text, timestamp, bottom, i }) => {
+        const momentTime = moment(timestamp)
+        blank[i] = { name, text, time: this.now - timestamp > 1000 * 60 * 60 ? momentTime.calendar() : momentTime.fromNow(), bottom, i }
       })
       return blank
     }
@@ -210,6 +216,7 @@ new Vue({
       (async () => {
         this.uptime = await ipcRenderer.invoke('uptime')
       })()
+      this.now = Date.now()
       return interval
     }
     setInterval(interval(), 1000)

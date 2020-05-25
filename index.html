@@ -60,6 +60,10 @@
       cursor: grab;
     }
 
+    .danmakuTime {
+      color: rgba(0, 0, 0, 0.3);
+    }
+
   </style>
 </head>
 
@@ -124,8 +128,8 @@
 
     <section class="section danmakuBox" id="danmakuBox">
       <div class="danmakuContainer" :style="{ height: `${danmakuHeight}px` }">
-        <p class="danmaku" v-for="({name,text,bottom,i}) in danmakus" :key="`danmaku_${i}`" :style="{ bottom:`${bottom}px`, display: bottom === -100 ? 'none' : '' }">
-          <b>{{name}}:</b>{{text}}
+        <p class="danmaku" v-for="({name,text,time,bottom,i}) in danmakus" :key="`danmaku_${i}`" :style="{ bottom:`${bottom}px`, display: bottom === -100 ? 'none' : '' }">
+          <b>{{name}}:</b>{{text}} <span class="danmakuTime">({{time}})</span>
         </p>
         <div class="danmakuDetectors" v-for="({height,bottom,i}) in danmakuDetectors" :style="{ height:`${height}px`, bottom:`${bottom}px` }" :id="`danmakuDetectors_${i}`" :key="`danmakuDetectors_${i}`" :n="i">
         </div>
