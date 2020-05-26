@@ -3,9 +3,9 @@ name: Node CI
 on:
   push:
     branches:
-      - 'master'
+      - "master"
     tags-ignore:
-      - '**'
+      - "**"
 
 jobs:
   build:
@@ -17,21 +17,18 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          submodules: 'recursive'
+          submodules: "recursive"
 
       - name: Use Node.js 13
         uses: actions/setup-node@v1
         with:
           node-version: "13"
 
-      - name: Get npm cache directory
-        id: npm-cache-dir
-        run: echo "::set-output name=dir::$(npm config get cache)"
-
       - name: Cache dependencies
+        if: matrix.os != "windows-latest"
         uses: actions/cache@v1
         with:
-          path: ${{ steps.npm-cache-dir.outputs.dir }}
+          path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
