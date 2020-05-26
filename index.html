@@ -61,6 +61,9 @@
 
     .danmakuTime {
       color: rgba(0, 0, 0, 0.3);
+      display: inline-block;
+      min-width: 7em;
+      text-align: center;
     }
 
   </style>
@@ -129,8 +132,8 @@
 
     <section class="section danmakuBox" id="danmakuBox">
       <div class="danmakuContainer" :style="{ height: `${danmakuHeight}px` }">
-        <p class="danmaku" v-for="({name,text,time,bottom,i}) in danmakus" :key="`danmaku_${i}`" :style="{ bottom:`${bottom}px`, display: bottom === -100 ? 'none' : '' }">
-          <b>{{name}}:</b>{{text}} <span class="danmakuTime">({{time}})</span>
+        <p class="danmaku" v-for="({name,text,absoluteTime,relativeTime,bottom,i}) in danmakus" :key="`danmaku_${i}`" :style="{ bottom:`${bottom}px`, display: bottom === -100 ? 'none' : '' }">
+          <span class="danmakuTime" v-bind:title="absoluteTime">({{relativeTime}})</span><b>{{name}}</b>: {{text}}
         </p>
         <div class="danmakuDetectors" v-for="({height,bottom,i}) in danmakuDetectors" :style="{ height:`${height}px`, bottom:`${bottom}px` }" :id="`danmakuDetectors_${i}`" :key="`danmakuDetectors_${i}`" :n="i">
         </div>
