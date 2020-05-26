@@ -38,7 +38,10 @@ const updates = [
   ['1.9.2', '- 修好了1.9.1引入的导致不能显示界面问题，感谢@ouuan'],
   ['1.9.3', `
     - 降低electron版本尝试修复macOS不能公证的问题
-    - 弹幕太长的提示`]
+    - 弹幕太长的提示`],
+  ['1.9.4', `
+    - 弹幕是空的时候不能发送@ouuan
+    - 改变了弹幕时间的位置@ouuan`]
 ].map(([version, message]) => [version, message.split('\n')]).reverse()
 
 const get = key => ipcRenderer.invoke('state', key)
