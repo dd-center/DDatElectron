@@ -1,11 +1,6 @@
 name: Node CI
 
-on:
-  push:
-    branches:
-      - "master"
-    tags-ignore:
-      - "**"
+on: [push, pull_request]
 
 jobs:
   build:
@@ -25,7 +20,7 @@ jobs:
           node-version: "13"
 
       - name: Cache dependencies
-        if: matrix.os != "windows-latest"
+        if: matrix.os != 'windows-latest'
         uses: actions/cache@v1
         with:
           path: ~/.npm
