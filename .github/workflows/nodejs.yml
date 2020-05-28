@@ -3,9 +3,9 @@ name: Node CI
 on:
   push:
     branches:
-      - "master"
+      - 'master'
     tags-ignore:
-      - "**"
+      - '**'
 
 jobs:
   build:
@@ -17,15 +17,15 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          submodules: "recursive"
+          submodules: 'recursive'
 
       - name: Use Node.js 13
         uses: actions/setup-node@v1
         with:
-          node-version: "13"
+          node-version: '13'
 
       - name: Cache dependencies
-        if: matrix.os != "windows-latest"
+        if: matrix.os != 'windows-latest'
         uses: actions/cache@v1
         with:
           path: ~/.npm
