@@ -271,6 +271,8 @@
         <p>运行时间: {{uptime}}</p>
         <br>
         <p>Github: <a href="https://github.com/dd-center/DDatElectron" target="_blank" rel="noopener noreferrer">https://github.com/dd-center/DDatElectron</a></p>
+        <p>核心/终端命令行CLI版本 DDatHome-nodejs: <a href="https://github.com/dd-center/DDatHome-nodejs" target="_blank" rel="noopener noreferrer">https://github.com/dd-center/DDatHome-nodejs</a></p>
+        <p>命令行CLI版本可执行文件: <a href="https://github.com/dd-center/DDatHome-nodejs/releases/latest" target="_blank" rel="noopener noreferrer">https://github.com/dd-center/DDatHome-nodejs/releases/latest</a></p>
         <br>
         <p>版本: {{version}} <span v-if="state.update === false">(最新版本)</span></p>
         <p v-if="state.update">(新版本 {{state.update}}) <a v-if="state.updateDownloaded" @click="restart" class="button is-small is-rounded is-info">重启更新</a></p>

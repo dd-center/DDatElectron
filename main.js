@@ -41,7 +41,8 @@ const updates = [
     - 弹幕太长的提示`],
   ['1.9.4', `
     - 弹幕是空的时候不能发送@ouuan
-    - 改变了弹幕时间的位置@ouuan`]
+    - 改变了弹幕时间的位置@ouuan`],
+  ['1.9.5', '- 添加了命令行版本的下载链接']
 ].map(([version, message]) => [version, message.split('\n')]).reverse()
 
 const get = key => ipcRenderer.invoke('state', key)
