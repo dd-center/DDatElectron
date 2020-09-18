@@ -47,7 +47,8 @@ const updates = [
     嘿嘿 好久不见
     - 更新了一部分依赖包
     - Electron 从8更新到10
-    - 更新了DD@Home核心`]
+    - 更新了DD@Home核心`],
+  ['1.10.1', '- Electron 从10更新到8 (?)']
 ].map(([version, message]) => [version, message.split('\n')]).reverse()
 
 const get = key => ipcRenderer.invoke('state', key)
