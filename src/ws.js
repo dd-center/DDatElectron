@@ -72,6 +72,12 @@ module.exports = async ({ state, db }) => {
 
   dd.on('url', url => console.log('job received', url))
 
+  dd.on('relay', (...msg) => {
+    const m = msg.join(' ')
+    console.log('relay', ...msg)
+    state.log = m
+  })
+
   dd.on('done', (now, duration, url) => {
     state.delay = Math.round(process.uptime() * 1000 / state.completeNumNow)
     console.log(`job complete ${(duration / 1000).toFixed(2)}s`, state.delay)
