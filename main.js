@@ -48,7 +48,10 @@ const updates = [
     - 更新了一部分依赖包
     - Electron 从8更新到10
     - 更新了DD@Home核心`],
-  ['1.10.1', '- Electron 从10更新到8 (?)']
+  ['1.10.1', '- Electron 从10更新到8 (?)'],
+  ['1.11.0', `
+  - 更新Electron@8.5.2
+  - 加入了转发连接直播间的功能`]
 ].map(([version, message]) => [version, message.split('\n')]).reverse()
 
 const get = key => ipcRenderer.invoke('state', key)
