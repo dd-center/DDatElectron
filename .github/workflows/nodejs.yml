@@ -51,32 +51,3 @@ jobs:
           APPLEIDPASS: ${{ secrets.APPLEIDPASS }}
           CSC_LINK: ${{ secrets.CSC_LINK }}
           CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
-
-  releaseBranch:
-    needs: [build]
-    runs-on: macOS-latest
-
-    steps:
-    - uses: actions/checkout@v2
-      with:
-        submodules: 'recursive'
-    - name: Use Node.js 14
-      uses: actions/setup-node@v1
-      with:
-        node-version: 14
-    - run: npm install
-    - run: mkdir dist
-    - name: Download
-      run: node build/release.js
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Deploy
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./dist
-        publish_branch: release
-        force_orphan: true
-        user_name: 'nanashi'
-        user_email: 'example@example.com'
