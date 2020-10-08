@@ -85,7 +85,8 @@ new Vue({
       danmakuLength: 0,
       uuid: undefined,
       id: undefined,
-      danmaku: undefined
+      danmaku: undefined,
+      wsLimit: undefined
     },
     displayDanmaku: {
       danmakuPack: [],
@@ -97,6 +98,7 @@ new Vue({
     interval: undefined,
     nickname: undefined,
     uuid: undefined,
+    wsLimit: undefined,
     danmaku: '',
     danmakuWait: false,
     now: Date.now(),
@@ -110,6 +112,9 @@ new Vue({
     },
     nickname(value) {
       ipcRenderer.invoke('updateNickname', value)
+    },
+    wsLimit(limit) {
+      ipcRenderer.invoke('updateWebSocketLimit', limit)
     },
     'state.log'(log) {
       this.logs.unshift(log)

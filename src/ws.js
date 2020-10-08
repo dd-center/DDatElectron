@@ -36,6 +36,7 @@ const makeURL = ({ nickname, uuid }) => {
 module.exports = async ({ state, db }) => {
   const PING_INTERVAL = 1000 * 30
   const INTERVAL = await db.get('INTERVAL').catch(() => 840)
+  let wsLimit = await db.get('wsLimit').catch(() => 3000)
   let nickname = await db.get('nickname').catch(() => undefined)
   let uuid = await db.get('uuid').catch(() => uuidv4())
 
@@ -44,8 +45,9 @@ module.exports = async ({ state, db }) => {
   state.log = `using: ${wsURL}`
   console.log(`using: ${wsURL}`)
   state.nickname = nickname
+  state.wsLimit = wsLimit
 
-  const dd = new DDAtHome(wsURL, { PING_INTERVAL, INTERVAL })
+  const dd = new DDAtHome(wsURL, { PING_INTERVAL, INTERVAL, wsLimit })
 
   const query = async (document, variableValues = {}) => {
     const result = await dd.ask({ type: 'GraphQL', document, variableValues })
@@ -145,7 +147,12 @@ module.exports = async ({ state, db }) => {
     uuid = id
     dd.url = makeURL({ nickname, uuid })
   }
+  const updateWebSocketLimit = limit => {
+    db.put('wsLimit', limit)
+    wsLimit = limit
+    dd.wsLimit = wsLimit
+  }
   const sendDanmaku = danmaku => dd.ask({ type: 'danmaku', data: danmaku })
 
-  return { getWs, updateInterval, updateNickname, sendDanmaku, updateUUID, query }
+  return { getWs, updateInterval, updateNickname, sendDanmaku, updateUUID, updateWebSocketLimit, query }
 }

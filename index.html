@@ -215,6 +215,16 @@
       <br>
 
       <div class="field">
+        <label class="label">直播间连接数</label>
+        <div class="control">
+          <input class="input" type="number" v-model="wsLimit" placeholder="同时转发多少直播间">
+        </div>
+        <p class="help">当前: {{state.wsLimit}}</p>
+      </div>
+
+      <br>
+
+      <div class="field">
         <label class="label">昵称 (可选)</label>
         <div class="control">
           <input class="input" type="text" v-model="nickname" placeholder="会显示在统计中哦">
