@@ -86,6 +86,8 @@ new Vue({
       uuid: undefined,
       id: undefined,
       danmaku: undefined,
+      roomLength: 0,
+      totalActive: 0,
       wsLimit: undefined
     },
     displayDanmaku: {
@@ -229,6 +231,10 @@ new Vue({
         blank[i] = { name, text, absoluteTime: momentTime.local().format(), relativeTime: this.now - timestamp > 1000 * 60 * 60 ? momentTime.calendar() : momentTime.fromNow(), bottom, i }
       })
       return blank
+    },
+    averageActive() {
+      const { roomLength, totalActive } = this.state
+      return Math.round(totalActive / roomLength * 10) / 10
     }
   },
   async created() {

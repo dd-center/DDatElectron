@@ -121,10 +121,12 @@ module.exports = async ({ state, db }) => {
     while (true) {
       if (dd.ws.readyState === 1) {
         const pause = wait(1000 * 5)
-        const { homes, online, power } = await query(gql`{ online power: DD homes { id resolves: success rejects: fail runtime platform version name docker uuid } }`).catch(() => state)
+        const { homes, online, power, rooms: { length: roomLength }, totalActive } = await query(gql`{ online rooms { length } totalActive power: DD homes { id resolves: success rejects: fail runtime platform version name docker uuid } }`).catch(() => state)
         state.homes = homes
         state.online = online
         state.power = power
+        state.roomLength = roomLength
+        state.totalActive = totalActive
         await pause
       } else {
         await wait(500)

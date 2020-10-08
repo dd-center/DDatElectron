@@ -73,6 +73,8 @@ module.exports = ({ getWin, state, stateEmitter, getWs, updateInterval, quitAndI
   subscribe('uuid')
   subscribe('id')
   subscribe('wsLimit')
+  subscribe('totalActive')
+  subscribe('roomLength')
 
   createWindow()
 }
