@@ -51,7 +51,8 @@ const updates = [
   ['1.10.1', '- Electron 从10更新到8 (?)'],
   ['1.11.0', `
   - 更新Electron@8.5.2
-  - 加入了转发连接直播间的功能`]
+  - 加入了转发连接直播间的功能`],
+  ['1.12.0', '- 展示直播间监听状态，设置直播间监听数上限']
 ].map(([version, message]) => [version, message.split('\n')]).reverse()
 
 const get = key => ipcRenderer.invoke('state', key)
