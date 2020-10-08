@@ -7,7 +7,8 @@ const state = new Proxy({
   completeNumNow: 0,
   logs: [],
   homes: [],
-  danmakuLength: 0
+  danmakuLength: 0,
+  livedRooms: 0
 }, {
   set(target, key, value) {
     target[key] = value

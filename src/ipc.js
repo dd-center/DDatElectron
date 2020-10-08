@@ -75,6 +75,7 @@ module.exports = ({ getWin, state, stateEmitter, getWs, updateInterval, quitAndI
   subscribe('wsLimit')
   subscribe('totalActive')
   subscribe('roomLength')
+  subscribe('livedRooms')
 
   createWindow()
 }

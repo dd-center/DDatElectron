@@ -93,6 +93,10 @@ module.exports = async ({ state, db }) => {
     console.log('closed', n, reason)
   })
 
+  dd.on('relayStatus', ({ lived }) => {
+    state.livedRooms = lived
+  })
+
   dd.on('payload', ({ type }) => {
     if (type === 'danmaku') {
       query(gql`{danmaku{length}}`)

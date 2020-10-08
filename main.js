@@ -88,6 +88,7 @@ new Vue({
       danmaku: undefined,
       roomLength: 0,
       totalActive: 0,
+      livedRooms: 0,
       wsLimit: undefined
     },
     displayDanmaku: {
@@ -211,7 +212,7 @@ new Vue({
       return this.danmaku.length > 256
     },
     emptyDanmaku() {
-      return this.danmaku.length == 0
+      return this.danmaku.length === 0
     },
     danmakuHeight() {
       return this.state.danmakuLength * 24
