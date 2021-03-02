@@ -6,7 +6,7 @@
   "main": "index.js",
   "dependencies": {
     "ddatnodejs": "file:DDatHome-nodejs",
-    "electron-updater": "^4.2.5",
+    "electron-updater": "^4.3.8",
     "graphql": "^15.3.0",
     "graphql-tag": "^2.11.0",
     "level": "^6.0.0",
