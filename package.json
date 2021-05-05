@@ -30,7 +30,7 @@
   "devDependencies": {
     "dugite": "^1.88.2",
     "electron": "^8.5.2",
-    "electron-builder": "^22.1.0",
+    "electron-builder": "^22.11.1",
     "electron-notarize": "^1.0.0",
     "got": "^11.6.2"
   }
