@@ -1,5 +1,6 @@
 const { app, BrowserWindow, shell } = require('electron')
 const { once } = require('events')
+const { join } = require('path')
 
 const ready = once(app, 'ready')
 
@@ -15,7 +16,7 @@ const createWindow = async () => {
     titleBarStyle: 'hiddenInset',
     show: false,
     webPreferences: {
-      nodeIntegration: true
+      preload: join(__dirname, '..', 'preload.js')
     }
   })
 
@@ -32,7 +33,7 @@ const createWindow = async () => {
   })
 }
 
-app.on('window-all-closed', () => {})
+app.on('window-all-closed', () => { })
 
 app.on('activate', () => {
   if (win) {

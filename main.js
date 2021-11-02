@@ -1,15 +1,14 @@
 /* eslint-disable no-new */
-const { ipcRenderer } = require('electron')
-const { v4: uuidv4 } = require('uuid')
-const gql = require('graphql-tag')
+const { momentTime, meta, gql, uuidv4, get, query, invoke, send, on: rawOn } = window.app
 
-const moment = require('moment')
-
-const meta = require('./package.json')
+const ipc = new EventTarget()
+const on = (name, callback) => {
+  rawOn(name)
+  ipc.addEventListener(name, ({ detail }) => callback(undefined, ...detail))
+}
+window.addEventListener('electron-ipc', ({ detail: { name, args } }) => ipc.dispatchEvent(new CustomEvent(name, { detail: args })))
 
 const Vue = window.Vue
-
-moment.locale('zh-cn')
 
 const updates = [
   ['1.0.1', '- 修复macOS一些兼容性问题'],
@@ -54,15 +53,6 @@ const updates = [
   - 加入了转发连接直播间的功能`],
   ['1.12.0', '- 展示直播间监听状态，设置直播间监听数上限']
 ].map(([version, message]) => [version, message.split('\n')]).reverse()
-
-const get = key => ipcRenderer.invoke('state', key)
-const query = async (document, variableValues) => {
-  const result = await ipcRenderer.invoke('query', document, variableValues)
-  if (!result) {
-    throw new Error('query failed')
-  }
-  return result
-}
 
 new Vue({
   el: '#main',
@@ -111,14 +101,14 @@ new Vue({
   watch: {
     interval(value) {
       if (value) {
-        ipcRenderer.invoke('updateInterval', Number(value))
+        invoke('updateInterval', Number(value))
       }
     },
     nickname(value) {
-      ipcRenderer.invoke('updateNickname', value)
+      invoke('updateNickname', value)
     },
     wsLimit(limit) {
-      ipcRenderer.invoke('updateWebSocketLimit', limit)
+      invoke('updateWebSocketLimit', limit)
     },
     'state.log'(log) {
       this.logs.unshift(log)
@@ -156,19 +146,19 @@ new Vue({
           this.danmakuWait = false
         }, 1000)
 
-        ipcRenderer.send('danmaku', this.danmaku)
+        send('danmaku', this.danmaku)
 
         this.danmaku = ''
       }
     },
     close() {
       if (this.uuid) {
-        ipcRenderer.invoke('updateUUID', this.uuid)
+        invoke('updateUUID', this.uuid)
       }
-      ipcRenderer.invoke('close')
+      invoke('close')
     },
     restart() {
-      ipcRenderer.invoke('restart')
+      invoke('restart')
     },
     randomUUID() {
       this.uuid = uuidv4()
@@ -229,8 +219,8 @@ new Vue({
       const blank = Array(300).fill(-100).map((bottom, i) => ({ bottom, i }))
       const showing = this.displayDanmaku.danmakuPack.filter((_, i) => this.displayDanmaku.showingPack[i])
       showing.flat().forEach(({ name, text, timestamp, bottom, i }) => {
-        const momentTime = moment(timestamp)
-        blank[i] = { name, text, absoluteTime: momentTime.local().format(), relativeTime: this.now - timestamp > 1000 * 60 * 60 ? momentTime.calendar() : momentTime.fromNow(), bottom, i }
+        const { absoluteTime, calendar, fromNow } = momentTime(timestamp)
+        blank[i] = { name, text, absoluteTime, relativeTime: this.now - timestamp > 1000 * 60 * 60 ? calendar : fromNow, bottom, i }
       })
       return blank
     },
@@ -244,7 +234,7 @@ new Vue({
     logs.shift()
     this.logs = logs
 
-    ipcRenderer.on('stateUpdate', (_events, key, value) => {
+    on('stateUpdate', (_events, key, value) => {
       this.state[key] = value
     })
 
@@ -254,7 +244,7 @@ new Vue({
 
     const interval = () => {
       (async () => {
-        this.uptime = await ipcRenderer.invoke('uptime')
+        this.uptime = await invoke('uptime')
       })()
       this.now = Date.now()
       return interval
@@ -277,6 +267,6 @@ new Vue({
   async mounted() {
     document.getElementById('main').style.display = 'block'
     await this.$nextTick()
-    ipcRenderer.invoke('ready')
+    invoke('ready')
   }
 })

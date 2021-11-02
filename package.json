@@ -14,7 +14,7 @@
     "uuid": "^8.3.0"
   },
   "scripts": {
-    "start": "electron .",
+    "start": "npx electron .",
     "build": "node build"
   },
   "repository": {
@@ -29,9 +29,9 @@
   "homepage": "https://github.com/dd-center/DDatElectron#readme",
   "devDependencies": {
     "dugite": "^1.88.2",
-    "electron": "^8.5.2",
-    "electron-builder": "^22.1.0",
-    "electron-notarize": "^1.0.0",
+    "electron": "^15.3.0",
+    "electron-builder": "^22.13.1",
+    "electron-notarize": "^1.1.1",
     "got": "^11.6.2"
   }
 }
