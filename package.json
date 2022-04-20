@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/dd-center/DDatElectron#readme",
   "devDependencies": {
-    "dugite": "^1.88.2",
+    "dugite": "^1.109.0",
     "electron": "^15.3.0",
     "electron-builder": "^22.13.1",
     "electron-notarize": "^1.1.1",
