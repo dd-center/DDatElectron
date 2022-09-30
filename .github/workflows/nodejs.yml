@@ -19,10 +19,10 @@ jobs:
         with:
           submodules: 'recursive'
 
-      - name: Use Node.js 14
+      - name: Use Node.js 18
         uses: actions/setup-node@v3.5.0
         with:
-          node-version: 14
+          node-version: 18
 
       - name: Cache dependencies
         if: matrix.os != 'windows-latest'
