@@ -24,23 +24,6 @@ jobs:
         with:
           node-version: 18
 
-      - name: Cache dependencies
-        if: matrix.os != 'windows-latest'
-        uses: actions/cache@v1
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
-      - name: Cache install
-        uses: actions/cache@v1
-        with:
-          path: ./node_modules
-          key: ${{ runner.os }}-dep-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-dep-
-
       - run: npm install
 
       - run: npm run build
