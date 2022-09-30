@@ -8,7 +8,7 @@
     "ddatnodejs": "file:DDatHome-nodejs",
     "electron-updater": "^4.2.5",
     "graphql": "^15.3.0",
-    "graphql-tag": "^2.11.0",
+    "graphql-tag": "^2.12.6",
     "level": "^6.0.0",
     "moment": "^2.24.0",
     "node-fetch": "^2.6.7",
