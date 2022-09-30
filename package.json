@@ -1,7 +1,7 @@
 {
   "name": "ddatelectron",
   "description": "DD@Electron",
-  "version": "1.14.0",
+  "version": "1.14.1",
   "private": true,
   "main": "index.js",
   "dependencies": {
