@@ -9,7 +9,7 @@ const Platform = builder.Platform
 const notarize = require('./notarize')
 
 GitProcess.exec(['log', '-1', '--format="%s"'], process.cwd()).then(async ({ stdout }) => {
-  const { body: vue } = await got('https://vuejs.org/js/vue.min.js')
+  const { body: vue } = await got('https://cdn.jsdelivr.net/npm/vue@2')
   await fs.writeFile('vue/vue.js', vue)
 
   const subject = stdout.replace(/"/g, '').replace(/\n/g, '')
@@ -43,7 +43,7 @@ GitProcess.exec(['log', '-1', '--format="%s"'], process.cwd()).then(async ({ std
     },
     publish: publish ? 'always' : 'never'
   }).catch(console.error)
-  const { body: vueDev } = await got('https://vuejs.org/js/vue.js')
+  const { body: vueDev } = await got('https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js')
   await fs.writeFile('vue/vue.js', vueDev)
   console.log('done')
 })
