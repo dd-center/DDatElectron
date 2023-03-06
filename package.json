@@ -33,6 +33,6 @@
     "electron": "^15.3.0",
     "electron-builder": "^22.13.1",
     "electron-notarize": "^1.1.1",
-    "got": "^11.6.2"
+    "got": "^12.6.0"
   }
 }
