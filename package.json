@@ -7,7 +7,7 @@
   "dependencies": {
     "ddatnodejs": "file:DDatHome-nodejs",
     "electron-updater": "^4.2.5",
-    "graphql": "^15.3.0",
+    "graphql": "^16.6.0",
     "graphql-tag": "^2.11.0",
     "level": "^6.0.0",
     "moment": "^2.24.0",
