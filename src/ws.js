@@ -19,9 +19,9 @@ const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
 
 const makeURL = ({ nickname, uuid }) => {
   const url = new URL(base)
-  url.searchParams.set('runtime', `electronv${process.versions.electron}`)
+  url.searchParams.set('runtime', `electron/v${process.versions.electron}`)
   url.searchParams.set('version', VERSION)
-  url.searchParams.set('platform', process.platform)
+  url.searchParams.set('platform', `${process.platform}-${process.arch}`)
 
   if (uuid) {
     url.searchParams.set('uuid', uuid)
