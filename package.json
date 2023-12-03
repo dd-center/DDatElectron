@@ -12,7 +12,7 @@
     "level": "^6.0.0",
     "moment": "^2.24.0",
     "node-fetch": "^2.6.7",
-    "uuid": "^8.3.0"
+    "uuid": "^9.0.0"
   },
   "scripts": {
     "start": "npx electron .",
